@@ -19,7 +19,7 @@ import {
  * Sets the session
  * @param {*} user
  */
-const setSession = user => {
+const setSession = (user) => {
     let cookies = new Cookies();
     if (user) cookies.set('user', JSON.stringify(user), { path: '/' });
     else cookies.remove('user', { path: '/' });
@@ -75,15 +75,15 @@ function* logout({ payload: { history } }) {
 /**
  * Register the user
  */
-function* register({ payload: { fullname, email, password } }) {
+function* register({ payload: { firstName, lastName, username, email, password } }) {
     const options = {
-        body: JSON.stringify({ fullname, email, password }),
+        body: JSON.stringify({ firstName, lastName, username, email, password }),
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
     };
 
     try {
-        const response = yield call(fetchJSON, '/users/register', options);
+        const response = yield call(fetchJSON, '/authenticate/user/register', options);
         yield put(registerUserSuccess(response));
     } catch (error) {
         let message;

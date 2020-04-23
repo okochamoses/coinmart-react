@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Card, CardBody } from 'reactstrap';
 
-const AssetInfo = ({ rate, cryptocurrency }) => {
+const AssetInfo = ({ buying, selling, cryptocurrency }) => {
     return (
         <Card>
             <Row
@@ -21,13 +21,17 @@ const AssetInfo = ({ rate, cryptocurrency }) => {
                         <h5 className="card-title font-size-16">{cryptocurrency.name}</h5>
 
                         <p className="card-text">
-                            <small className="text-muted">
-                                Selling Rate: {rate} {cryptocurrency.currency}
-                            </small>
+                            {selling !== undefined || selling === '' ? (
+                                <small className="text-muted">
+                                    Selling Rate: {selling} {cryptocurrency.currency}
+                                </small>
+                            ) : null}
                             <br></br>
-                            <small className="text-muted">
-                                Buying Rate: {rate} {cryptocurrency.currency}
-                            </small>
+                            {buying !== undefined || buying === '' ? (
+                                <small className="text-muted">
+                                    Buying Rate: {buying} {cryptocurrency.currency}
+                                </small>
+                            ) : null}
                         </p>
                     </CardBody>
                 </Col>

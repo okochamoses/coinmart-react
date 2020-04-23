@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Row, Col, Card, CardBody } from 'reactstrap';
 import PageTitle from '../../components/PageTitle';
 import AssetInfo from './AssetInfo';
+import { getLoggedInUser } from '../../helpers/authUtils';
+import { fetchJSON } from '../../helpers/api';
 
 class Cryptocurrencies extends Component {
     constructor(props) {
@@ -13,108 +15,36 @@ class Cryptocurrencies extends Component {
         };
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
         const cryptocurrencyRates = await this.getCrytoRates();
+        console.log(cryptocurrencyRates);
 
         this.setState({ cryptocurrencyRates, filteredCryptocurrencyRates: cryptocurrencyRates });
     }
 
     async getCrytoRates() {
-        return [
-            {
-                rate: 7500.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Bitcoin',
-                    image: './images/cryptocurrencies/bitcoin.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                rate: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Bitcoin Cash',
-                    image: './images/cryptocurrencies/bitcoin_cash.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                rate: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Ethereum',
-                    image: './images/cryptocurrencies/ethereum.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                rate: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Ethereum classic',
-                    image: './images/cryptocurrencies/ethereum_classic.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                rate: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Litecoin',
-                    image: './images/cryptocurrencies/litecoin.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                rate: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Dashcoin',
-                    image: './images/cryptocurrencies/dash.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                rate: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Dogecoin',
-                    image: './images/cryptocurrencies/dogecoin.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                rate: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Monero',
-                    image: './images/cryptocurrencies/monero.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                rate: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Ripple',
-                    image: './images/cryptocurrencies/ripple.png',
-                    currency: 'USD',
-                },
-            },
-        ];
+        const options = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getLoggedInUser().token },
+        };
+        const response = await fetchJSON('/cryptocurrencies/rates', options);
+        if (response.code === 0) {
+            // console.log(response.data);
+            return response.data;
+        }
     }
 
-    filterList = e => {
+    filterList = (e) => {
         const searchValue = e.target.value;
-        const filtered = this.state.cryptocurrencyRates.filter(rates =>
+        const filtered = this.state.cryptocurrencyRates.filter((rates) =>
             rates.cryptocurrency.name.toLowerCase().includes(searchValue)
         );
         this.setState({ filteredCryptocurrencyRates: filtered });
     };
 
     render() {
-        const { filteredCryptocurrencyRates } = this.state;
+        let { filteredCryptocurrencyRates } = this.state;
+        // filteredCryptocurrencyRates = [];
         return (
             <React.Fragment>
                 <Row className="page-title">

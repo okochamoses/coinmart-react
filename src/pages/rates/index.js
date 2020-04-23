@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { Row, Col, Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
 import classnames from 'classnames';
+import CryptoJS from 'crypto-js';
 
 import PageTitle from '../../components/PageTitle';
 import InfoBar from './InfoBar';
 import FormBar from './FormBar';
+import { getLoggedInUser } from '../../helpers/authUtils';
+import { fetchJSON } from '../../helpers/api';
 
 class Cryptocurrencies extends Component {
     constructor(props) {
         super(props);
+        this.myRef = React.createRef();
         this.state = {
             activeTab: '1',
             cryptocurrencyRates: [],
@@ -17,6 +21,7 @@ class Cryptocurrencies extends Component {
             selectedGiftCard: {},
             txnType: '',
             amount: '0.00',
+            defaultSelect: {},
         };
         this.toggle = this.toggle.bind(this);
     }
@@ -24,7 +29,7 @@ class Cryptocurrencies extends Component {
     /**
      * Toggle the tab
      */
-    toggle = tab => {
+    toggle = (tab) => {
         if (this.state.activeTab !== tab) {
             this.setState({
                 activeTab: tab,
@@ -39,217 +44,62 @@ class Cryptocurrencies extends Component {
     async componentDidMount() {
         let cryptocurrencyRates = await this.getCryptoRates();
         let giftCardRates = await this.getGiftCardRates();
-        cryptocurrencyRates = cryptocurrencyRates.map(c => {
+        cryptocurrencyRates = cryptocurrencyRates.map((c) => {
             return { ...c, ...{ asset: c.cryptocurrency } };
         });
-        giftCardRates = giftCardRates.map(c => {
+        giftCardRates = giftCardRates.map((c) => {
             return { ...c, ...{ asset: c.giftCard } };
         });
         this.setState({ cryptocurrencyRates, giftCardRates });
+        let name = new URLSearchParams(this.props.location.search).get('name');
+        if (name !== null) {
+            giftCardRates.forEach((g) => {
+                if (g.asset.name.toLocaleLowerCase() === name.toLocaleLowerCase()) {
+                    this.setState({
+                        activeTab: '1',
+                        selectedCrypto: g,
+                        defaultSelect: { label: name, value: name.toLocaleLowerCase() },
+                    });
+                }
+            });
+            cryptocurrencyRates.forEach((g) => {
+                if (g.asset.name.toLocaleLowerCase() === name.toLocaleLowerCase()) {
+                    this.setState({
+                        activeTab: '2',
+                        selectedCrypto: g,
+                        defaultSelect: { label: name, value: name.toLocaleLowerCase() },
+                    });
+                }
+            });
+        }
     }
     async getCryptoRates() {
-        return [
-            {
-                sell: 7500.52,
-                buy: 7500.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Bitcoin',
-                    image: './images/cryptocurrencies/bitcoin.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                sell: 758.52,
-                buy: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Bitcoin Cash',
-                    image: './images/cryptocurrencies/bitcoin_cash.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                sell: 758.52,
-                buy: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Ethereum',
-                    image: './images/cryptocurrencies/ethereum.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                sell: 758.52,
-                buy: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Ethereum classic',
-                    image: './images/cryptocurrencies/ethereum_classic.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                sell: 758.52,
-                buy: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Litecoin',
-                    image: './images/cryptocurrencies/litecoin.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                sell: 758.52,
-                buy: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Dashcoin',
-                    image: './images/cryptocurrencies/dash.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                sell: 758.52,
-                buy: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Dogecoin',
-                    image: './images/cryptocurrencies/dogecoin.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                sell: 758.52,
-                buy: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Monero',
-                    image: './images/cryptocurrencies/monero.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                sell: 758.52,
-                buy: 758.52,
-                active: true,
-                cryptocurrency: {
-                    name: 'Ripple',
-                    image: './images/cryptocurrencies/ripple.png',
-                    currency: 'USD',
-                },
-            },
-        ];
+        const options = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getLoggedInUser().token },
+        };
+        const response = await fetchJSON('/cryptocurrencies/rates', options);
+        if (response.code === 0) {
+            console.log(response.data);
+            return response.data;
+        }
     }
 
     async getGiftCardRates() {
-        return [
-            {
-                buy: 7500.52,
-                sell: 2000,
-                active: true,
-                giftCard: {
-                    name: 'iTunes',
-                    image: './images/giftcards/itunes.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                buy: 758.52,
-                sell: 200,
-                active: true,
-                giftCard: {
-                    name: 'Google',
-                    image: './images/giftcards/google.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                buy: 758.52,
-                sell: 200,
-                active: true,
-                giftCard: {
-                    name: 'Sephora',
-                    image: './images/giftcards/sephora.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                buy: 758.52,
-                sell: 200,
-                active: true,
-                giftCard: {
-                    name: 'Nike',
-                    image: './images/giftcards/nike.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                buy: 758.52,
-                sell: 200,
-                active: true,
-                giftCard: {
-                    name: 'Steam',
-                    image: './images/giftcards/steam.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                buy: 758.52,
-                sell: 200,
-                active: true,
-                giftCard: {
-                    name: 'Vanilla',
-                    image: './images/giftcards/vanilla.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                buy: 758.52,
-                sell: 200,
-                active: true,
-                giftCard: {
-                    name: 'Netflix',
-                    image: './images/giftcards/netflix.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                buy: 758.52,
-                sell: 200,
-                active: true,
-                giftCard: {
-                    name: 'Amazon',
-                    image: './images/giftcards/amazon.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                buy: 758.52,
-                sell: 200,
-                active: true,
-                giftCard: {
-                    name: 'Walmart',
-                    image: './images/giftcards/walmart.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                buy: 758.52,
-                sell: 200,
-                active: true,
-                giftCard: {
-                    name: 'Walmart Visa',
-                    image: './images/giftcards/walmart_visa.png',
-                    currency: 'USD',
-                },
-            },
-        ];
+        const options = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getLoggedInUser().token },
+        };
+        const response = await fetchJSON('/gift-cards/rates', options);
+        if (response.code === 0) {
+            console.log(response.data);
+            return response.data;
+        }
     }
 
-    updateCryptoImage = e => {
+    updateCryptoImage = (e) => {
         let selected = {};
-        this.state.cryptocurrencyRates.forEach(r => {
+        this.state.cryptocurrencyRates.forEach((r) => {
             if (r.cryptocurrency.name === e.label) {
                 selected = r;
             }
@@ -257,9 +107,9 @@ class Cryptocurrencies extends Component {
         this.setState({ selectedCrypto: selected });
     };
 
-    updateGiftCardImage = e => {
+    updateGiftCardImage = (e) => {
         let selected = {};
-        this.state.giftCardRates.forEach(r => {
+        this.state.giftCardRates.forEach((r) => {
             if (r.giftCard.name === e.label) {
                 selected = r;
             }
@@ -267,11 +117,11 @@ class Cryptocurrencies extends Component {
         this.setState({ selectedCrypto: selected });
     };
 
-    updateTxnType = e => {
+    updateTxnType = (e) => {
         this.setState({ txnType: e.value });
     };
 
-    updateAmounr = e => {
+    updateAmounr = (e) => {
         this.setState({ amount: e.target.value });
     };
 
@@ -299,7 +149,6 @@ class Cryptocurrencies extends Component {
                     <Col md={12}>
                         <PageTitle breadCrumbItems={[]} title={'Trade'} />
                     </Col>
-
                     <Col sm={12} md={12} lg={8}>
                         <Card>
                             <CardBody>

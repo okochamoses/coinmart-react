@@ -22,7 +22,7 @@ class GiftCards extends Component {
     async getCrytoRates() {
         return [
             {
-                rate: 7500.52,
+                selling: 7500.52,
                 active: true,
                 giftCard: {
                     name: 'iTunes',
@@ -31,7 +31,7 @@ class GiftCards extends Component {
                 },
             },
             {
-                rate: 758.52,
+                selling: 758.52,
                 active: true,
                 giftCard: {
                     name: 'Google',
@@ -40,7 +40,7 @@ class GiftCards extends Component {
                 },
             },
             {
-                rate: 758.52,
+                selling: 758.52,
                 active: true,
                 giftCard: {
                     name: 'Sephora',
@@ -49,7 +49,7 @@ class GiftCards extends Component {
                 },
             },
             {
-                rate: 758.52,
+                selling: 758.52,
                 active: true,
                 giftCard: {
                     name: 'Nike',
@@ -58,7 +58,7 @@ class GiftCards extends Component {
                 },
             },
             {
-                rate: 758.52,
+                selling: 758.52,
                 active: true,
                 giftCard: {
                     name: 'Steam',
@@ -67,7 +67,7 @@ class GiftCards extends Component {
                 },
             },
             {
-                rate: 758.52,
+                selling: 758.52,
                 active: true,
                 giftCard: {
                     name: 'Vanilla',
@@ -76,7 +76,7 @@ class GiftCards extends Component {
                 },
             },
             {
-                rate: 758.52,
+                selling: 758.52,
                 active: true,
                 giftCard: {
                     name: 'Netflix',
@@ -85,7 +85,7 @@ class GiftCards extends Component {
                 },
             },
             {
-                rate: 758.52,
+                selling: 758.52,
                 active: true,
                 giftCard: {
                     name: 'Amazon',
@@ -94,7 +94,7 @@ class GiftCards extends Component {
                 },
             },
             {
-                rate: 758.52,
+                selling: 758.52,
                 active: true,
                 giftCard: {
                     name: 'Walmart',
@@ -103,7 +103,7 @@ class GiftCards extends Component {
                 },
             },
             {
-                rate: 758.52,
+                selling: 758.52,
                 active: true,
                 giftCard: {
                     name: 'Walmart Visa',
@@ -114,9 +114,9 @@ class GiftCards extends Component {
         ];
     }
 
-    filterList = e => {
+    filterList = (e) => {
         const searchValue = e.target.value;
-        const filtered = this.state.giftCardRates.filter(rates =>
+        const filtered = this.state.giftCardRates.filter((rates) =>
             rates.giftCard.name.toLowerCase().includes(searchValue)
         );
         this.setState({ filteredGiftCardRates: filtered });

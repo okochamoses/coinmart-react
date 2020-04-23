@@ -15,13 +15,13 @@ const InfoBar = ({
     const renderOptions = () => {
         const options = [
             {
-                value: 'sell',
+                value: 'selling',
                 label: 'Sell',
             },
         ];
         if (activeTab === '2') {
             options.push({
-                value: 'buy',
+                value: 'buying',
                 label: 'Buy',
             });
         }
@@ -35,12 +35,13 @@ const InfoBar = ({
                     <Select
                         className="react-select"
                         classNamePrefix="react-select"
-                        options={tab.rates.map(rate => {
+                        options={tab.rates.map((rate) => {
                             return {
                                 value: rate.asset.name,
                                 label: rate.asset.name,
                             };
                         })}
+                        defaultValue={parentState.defaultSelect}
                         onChange={activeTab === '1' ? updateGiftCardImage : updateCryptoImage}></Select>
                 </FormGroup>
                 <FormGroup>

@@ -12,7 +12,6 @@ import {
     FORGET_PASSWORD_FAILED,
 } from './constants';
 
-
 export const loginUser = (username, password) => ({
     type: LOGIN_USER,
     payload: { username, password },
@@ -28,9 +27,9 @@ export const loginUserFailed = (error) => ({
     payload: error,
 });
 
-export const registerUser = (fullname, email, password) => ({
+export const registerUser = (firstName, lastName, username, email, password) => ({
     type: REGISTER_USER,
-    payload: { fullname, email, password },
+    payload: { firstName, lastName, username, email, password },
 });
 
 export const registerUserSuccess = (user) => ({

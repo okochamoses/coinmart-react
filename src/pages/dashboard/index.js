@@ -9,6 +9,7 @@ import giftCardsImage from '../../assets/images/util/itunes-card.png';
 import MainItem from './MainItemWidget';
 import Orders from './Orders';
 import ProjectStats from './ProjectStats';
+import { fetchJSON } from '../../helpers/api';
 
 class Dashboard extends Component {
     constructor(props) {
@@ -25,29 +26,13 @@ class Dashboard extends Component {
         };
     }
 
-    async componentWillMount() {
-        const giftCards = [
-            {
-                name: 'Apple Gift Card',
-                rate: '200',
-                currency: 'NGN',
-            },
-            {
-                name: 'Amazon Gift Card',
-                rate: '300',
-                currency: 'NGN',
-            },
-            {
-                name: 'Google Gift Card',
-                rate: '7500',
-                currency: 'NGN',
-            },
-            {
-                name: 'Vanilla  Gift Card',
-                rate: '7500',
-                currency: 'NGN',
-            },
-        ];
+    async componentDidMount() {
+        const options = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getLoggedInUser().token },
+        };
+        const response = await fetchJSON('/assets/top-assets', options);
+        const giftCards = response.data;
         const assetData = await this.getAssetData();
         this.setState({ mostUsedGiftCards: giftCards, assets: assetData });
     }
@@ -80,43 +65,6 @@ class Dashboard extends Component {
                         <Col sm={4} xl={6}>
                             <h4 className="mb-1 mt-0">Dashboard</h4>
                         </Col>
-                        {/* <Col sm={8} xl={6}>
-                            <form className="form-inline float-sm-right mt-3 mt-sm-0">
-                                <div className="form-group mb-sm-0 mr-2">
-                                    <Flatpickr
-                                        value={this.state.filterDate}
-                                        onChange={date => {
-                                            this.setState({ filterDate: date });
-                                        }}
-                                        options={{ mode: 'range' }}
-                                        className="form-control"
-                                    />
-                                </div>
-                                <UncontrolledButtonDropdown>
-                                    <DropdownToggle color="primary" className="dropdown-toggle">
-                                        <i className="uil uil-file-alt mr-1"></i>Download
-                                        <i className="icon ml-1">
-                                            <ChevronDown />
-                                        </i>
-                                    </DropdownToggle>
-                                    <DropdownMenu right>
-                                        <DropdownItem>
-                                            <Mail className="icon-dual icon-xs mr-2"></Mail>
-                                            <span>Email</span>
-                                        </DropdownItem>
-                                        <DropdownItem>
-                                            <Printer className="icon-dual icon-xs mr-2"></Printer>
-                                            <span>Print</span>
-                                        </DropdownItem>
-                                        <DropdownItem divider />
-                                        <DropdownItem>
-                                            <File className="icon-dual icon-xs mr-2"></File>
-                                            <span>Re-Generate</span>
-                                        </DropdownItem>
-                                    </DropdownMenu>
-                                </UncontrolledButtonDropdown>
-                            </form>
-                        </Col> */}
                     </Row>
 
                     {/* stats */}

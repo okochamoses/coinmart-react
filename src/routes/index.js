@@ -16,6 +16,9 @@ const Dashboard = React.lazy(() => import('../pages/dashboard'));
 const CryptoCurrencies = React.lazy(() => import('../pages/cryptocurrencies'));
 const GiftCards = React.lazy(() => import('../pages/giftCards'));
 const Rates = React.lazy(() => import('../pages/rates'));
+const CompleteTransactions = React.lazy(() => import('../pages/completeTransaction'));
+const TransactionHistory = React.lazy(() => import('../pages/transactionHistory'));
+const Settings = React.lazy(() => import('../pages/settings'));
 // apps
 const CalendarApp = React.lazy(() => import('../pages/apps/Calendar'));
 const EmailInbox = React.lazy(() => import('../pages/apps/Email/Inbox'));
@@ -60,7 +63,7 @@ const AdvancedTables = React.lazy(() => import('../pages/tables/Advanced'));
 const PrivateRoute = ({ component: Component, roles, ...rest }) => (
     <Route
         {...rest}
-        render={props => {
+        render={(props) => {
             if (!isUserAuthenticated()) {
                 // not logged in so redirect to login page with the return url
                 return <Redirect to={{ pathname: '/account/login', state: { from: props.location } }} />;
@@ -98,7 +101,7 @@ const dashboardRoutes = {
     //     text: '1',
     // },
     component: Dashboard,
-    roles: ['Admin'],
+    roles: ['USER'],
     route: PrivateRoute,
 };
 
@@ -111,8 +114,8 @@ const transactionRoutes = {
     //     variant: 'success',
     //     text: '1',
     // },
-    component: Dashboard,
-    roles: ['Admin'],
+    component: TransactionHistory,
+    roles: ['USER'],
     route: PrivateRoute,
 };
 
@@ -126,7 +129,7 @@ const giftCardRoutes = {
     //     text: '1',
     // },
     component: GiftCards,
-    roles: ['Admin'],
+    roles: ['USER'],
     route: PrivateRoute,
 };
 
@@ -140,7 +143,7 @@ const cryptoCurrencyRoutes = {
     //     text: '1',
     // },
     component: CryptoCurrencies,
-    roles: ['Admin'],
+    roles: ['USER'],
     route: PrivateRoute,
 };
 const ratesRoutes = {
@@ -153,7 +156,7 @@ const ratesRoutes = {
     //     text: '1',
     // },
     component: Rates,
-    roles: ['Admin'],
+    roles: ['USER'],
     route: PrivateRoute,
 };
 
@@ -166,8 +169,8 @@ const settingsRoutes = {
     //     variant: 'success',
     //     text: '1',
     // },
-    component: Dashboard,
-    roles: ['Admin'],
+    component: Settings,
+    roles: ['USER'],
     route: PrivateRoute,
 };
 
@@ -472,12 +475,19 @@ const authRoutes = {
     ],
 };
 
+const completeTransactionRoutes = {
+    path: '/complete-transaction',
+    name: 'Complete Transaction',
+    component: CompleteTransactions,
+    route: Route,
+};
+
 // flatten the list of all nested routes
-const flattenRoutes = routes => {
+const flattenRoutes = (routes) => {
     let flatRoutes = [];
 
     routes = routes || [];
-    routes.forEach(item => {
+    routes.forEach((item) => {
         flatRoutes.push(item);
 
         if (typeof item.children !== 'undefined') {
@@ -496,6 +506,7 @@ const allRoutes = [
     cryptoCurrencyRoutes,
     ratesRoutes,
     settingsRoutes,
+    completeTransactionRoutes,
     ...appRoutes,
     pagesRoutes,
     componentsRoutes,
@@ -512,12 +523,12 @@ const authProtectedRoutes = [
     cryptoCurrencyRoutes,
     ratesRoutes,
     settingsRoutes,
-    // ...appRoutes,
-    // pagesRoutes,
-    // componentsRoutes,
-    // chartRoutes,
-    // formsRoutes,
-    // tableRoutes,
+    ...appRoutes,
+    pagesRoutes,
+    componentsRoutes,
+    chartRoutes,
+    formsRoutes,
+    tableRoutes,
 ];
 const allFlattenRoutes = flattenRoutes(allRoutes);
 export { allRoutes, authProtectedRoutes, allFlattenRoutes };

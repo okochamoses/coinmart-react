@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { getLoggedInUser } from '../../helpers/authUtils';
+import { fetchJSON } from '../../helpers/api';
+import { Redirect } from 'react-router-dom';
 
 class Modals extends Component {
     constructor(props) {
@@ -7,6 +10,7 @@ class Modals extends Component {
 
         this.state = {
             modal: false,
+            redirect: '',
         };
 
         this.toggle = this.toggle.bind(this);
@@ -18,7 +22,7 @@ class Modals extends Component {
      * Show/hide the modal
      */
     toggle = () => {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
             modal: !prevState.modal,
         }));
     };
@@ -26,7 +30,7 @@ class Modals extends Component {
     /**
      * Opens large modal
      */
-    openModalWithSize = size => {
+    openModalWithSize = (size) => {
         this.setState({ size: size, className: null });
         this.toggle();
     };
@@ -34,7 +38,7 @@ class Modals extends Component {
     /**
      * Opens modal with custom class
      */
-    openModalWithClass = className => {
+    openModalWithClass = (className) => {
         this.setState({ className: className, size: null });
         this.toggle();
     };
@@ -47,8 +51,34 @@ class Modals extends Component {
         return selectedCrypto;
     };
 
+    initiateTransaction = async () => {
+        const { selectedCrypto, amount, activeTab, txnType } = this.props.parentState;
+        const transactionDAO = {
+            asset: selectedCrypto.asset.name,
+            txnType: txnType,
+            txnForm: activeTab === '1' ? 'GIFT_CARD' : 'CRYPTOCURRENCY',
+            status: 'PENDING',
+            units: amount,
+            value: amount * selectedCrypto[txnType],
+        };
+        console.log(transactionDAO);
+
+        const options = {
+            body: JSON.stringify(transactionDAO),
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getLoggedInUser().token },
+        };
+        const response = await fetchJSON('/transactions', options);
+        if (response.code === 0) {
+            this.setState({ redirect: '/complete-transaction?reference=' + response.data.reference });
+            // return response.data;
+        }
+    };
+
     render() {
-        console.log(this.props.parentState);
+        if (this.state.redirect !== '') {
+            return <Redirect to={this.state.redirect} />;
+        }
         return (
             <React.Fragment>
                 <button
@@ -100,7 +130,7 @@ class Modals extends Component {
                         </table>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.toggle}>
+                        <Button color="primary" onClick={this.initiateTransaction}>
                             Proceed
                         </Button>
                         <Button color="secondary" className="ml-1" onClick={this.toggle}>

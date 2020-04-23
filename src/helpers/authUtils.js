@@ -26,7 +26,6 @@ const isUserAuthenticated = () => {
 const getLoggedInUser = () => {
     const cookies = new Cookies();
     const user = cookies.get('user');
-    // console.log(JSON.parse(user));
     return user ? (typeof user == 'object' ? user : user) : null;
 };
 

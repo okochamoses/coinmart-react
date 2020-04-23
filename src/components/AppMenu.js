@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import MetisMenu from 'metismenujs/dist/metismenujs';
 
 import { initMenu, changeActiveMenuFromLocation } from '../redux/actions';
-
+import { getLoggedInUser } from '../helpers/authUtils';
 
 const MenuItemWithChildren = ({ item, linkClassNames, subMenuClassNames, activatedMenuItemIds }) => {
     const Icon = item.icon || null;
@@ -39,12 +39,12 @@ const MenuItemWithChildren = ({ item, linkClassNames, subMenuClassNames, activat
                                     subMenuClassNames="side-nav-third-level"
                                 />
                             ) : (
-                                    <MenuItem
-                                        item={child}
-                                        className={classNames({ active: activatedMenuItemIds.indexOf(child.id) >= 0 })}
-                                        linkClassName={classNames({ active: activatedMenuItemIds.indexOf(child.id) >= 0 })}
-                                    />
-                                )}
+                                <MenuItem
+                                    item={child}
+                                    className={classNames({ active: activatedMenuItemIds.indexOf(child.id) >= 0 })}
+                                    linkClassName={classNames({ active: activatedMenuItemIds.indexOf(child.id) >= 0 })}
+                                />
+                            )}
                         </React.Fragment>
                     );
                 })}
@@ -66,7 +66,9 @@ const MenuItemLink = ({ item, className }) => {
     return (
         <Link to={item.path} className={classNames('side-nav-link-ref', 'side-sub-nav-link', className)}>
             {item.icon && <Icon />}
-            {item.badge && <span className={`font-size-12 badge badge-${item.badge.variant} float-right`}>{item.badge.text}</span>}
+            {item.badge && (
+                <span className={`font-size-12 badge badge-${item.badge.variant} float-right`}>{item.badge.text}</span>
+            )}
             <span> {item.name} </span>
         </Link>
     );
@@ -90,7 +92,7 @@ class AppMenu extends Component {
         });
     };
 
-    componentDidUpdate = prevProps => {
+    componentDidUpdate = (prevProps) => {
         if (
             !prevProps.menu.menuItems ||
             (prevProps.menu.menuItems && prevProps.menu.menuItems !== this.props.menu.menuItems)
@@ -120,54 +122,59 @@ class AppMenu extends Component {
 
     render() {
         const isHorizontal = this.props.mode === 'horizontal';
-        const activatedKeys = isHorizontal ? [] : this.props.menu ? (this.props.menu.activatedMenuItemIds? this.props.menu.activatedMenuItemIds :[]) : [] || [];
+        const activatedKeys = isHorizontal
+            ? []
+            : this.props.menu
+            ? this.props.menu.activatedMenuItemIds
+                ? this.props.menu.activatedMenuItemIds
+                : []
+            : [] || [];
 
         return (
             <React.Fragment>
-                
-                        {this.props.menu && this.props.menu.menuItems && (
-                            <ul className="metismenu" id="menu-bar">
-                                {this.props.menu.menuItems.map((item, i) => {
-                                    return (
-                                        <React.Fragment key={item.id}>
-                                            {item.header && !isHorizontal && (
-                                                <li className="menu-title" key={i + '-el'}>
-                                                    {item.header}
-                                                </li>
-                                            )}
+                {this.props.menu && this.props.menu.menuItems && (
+                    <ul className="metismenu" id="menu-bar">
+                        {this.props.menu.menuItems.map((item, i) => {
+                            const user = getLoggedInUser();
+                            if (item.roles !== undefined && item.roles.includes(user.role)) {
+                                return (
+                                    <React.Fragment key={item.id}>
+                                        {item.header && !isHorizontal && (
+                                            <li className="menu-title" key={i + '-el'}>
+                                                {item.header}
+                                            </li>
+                                        )}
 
-                                            {item.children ? (
-                                                <MenuItemWithChildren
-                                                    item={item}
-                                                    subMenuClassNames="nav-second-level"
-                                                    activatedMenuItemIds={activatedKeys}
-                                                    linkClassNames="side-nav-link"
-                                                />
-                                            ) : (
-                                                    <MenuItem
-                                                        item={item}
-                                                        className={classNames({ 'mm-active': activatedKeys.indexOf(item.id) >= 0 })}
-                                                        linkClassName="side-nav-link"
-                                                    />
-                                                )}
-                                        </React.Fragment>
-                                    );
-                                })}
-                            </ul>
-                        )}
+                                        {item.children ? (
+                                            <MenuItemWithChildren
+                                                item={item}
+                                                subMenuClassNames="nav-second-level"
+                                                activatedMenuItemIds={activatedKeys}
+                                                linkClassNames="side-nav-link"
+                                            />
+                                        ) : (
+                                            <MenuItem
+                                                item={item}
+                                                className={classNames({
+                                                    'mm-active': activatedKeys.indexOf(item.id) >= 0,
+                                                })}
+                                                linkClassName="side-nav-link"
+                                            />
+                                        )}
+                                    </React.Fragment>
+                                );
+                            }
+                        })}
+                    </ul>
+                )}
             </React.Fragment>
         );
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         menu: state.AppMenu,
     };
 };
-export default withRouter(
-    connect(
-        mapStateToProps,
-        { initMenu, changeActiveMenuFromLocation }
-    )(AppMenu)
-);
+export default withRouter(connect(mapStateToProps, { initMenu, changeActiveMenuFromLocation })(AppMenu));
