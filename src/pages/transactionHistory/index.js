@@ -4,7 +4,7 @@ import { Row, Col, Card, CardBody, Table } from 'reactstrap';
 import PageTitle from '../../components/PageTitle';
 import { getLoggedInUser } from '../../helpers/authUtils';
 import { fetchJSON } from '../../helpers/api';
-import noTransaction from '../../assets/images/projects/project-1.jpg';
+import noTransaction from '../../assets/images/projects/no_transactions.jpg';
 
 class TransactionHistory extends Component {
     constructor(props) {
@@ -52,7 +52,7 @@ class TransactionHistory extends Component {
                             <CardBody className="p-4">
                                 {transactions.length === 0 ? (
                                     <React.Fragment>
-                                        <img src={noTransaction} alt="No Transactions" />
+                                        <img src={noTransaction} style={{ width: '100%' }} alt="No Transactions" />
                                         <h4>You currently have no transactions</h4>
                                     </React.Fragment>
                                 ) : (

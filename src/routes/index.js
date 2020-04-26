@@ -249,6 +249,20 @@ const customerRoutes = {
     route: PrivateRoute,
 };
 
+const logout = {
+    path: '/logout',
+    name: 'Logout',
+    icon: FeatherIcon.Power,
+    // header: 'Navigation',
+    // badge: {
+    //     variant: 'success',
+    //     text: '1',
+    // },
+    component: Logout,
+    roles: ['ADMIN', 'USER'],
+    route: PrivateRoute,
+};
+
 // apps
 
 const calendarAppRoutes = {
@@ -596,6 +610,7 @@ const allRoutes = [
     formsRoutes,
     tableRoutes,
     authRoutes,
+    logout,
 ];
 
 const authProtectedRoutes = [
@@ -611,6 +626,7 @@ const authProtectedRoutes = [
     adminCrypto,
     adminGiftCard,
     customerRoutes,
+    logout,
     // ...appRoutes,
     // pagesRoutes,
     // componentsRoutes,
