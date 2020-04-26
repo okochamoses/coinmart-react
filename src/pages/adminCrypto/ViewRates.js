@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { getLoggedInUser } from '../../helpers/authUtils';
-import { fetchJSON } from '../../helpers/api';
 import Loader from '../../components/Loader';
 import { Button, ModalFooter, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import ToolkitProvider, { CSVExport, Search } from 'react-bootstrap-table2-toolkit';

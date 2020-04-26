@@ -1,20 +1,5 @@
 import React from 'react';
-import {
-    Row,
-    Col,
-    Card,
-    CardBody,
-    Button,
-    Badge,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    Label,
-    InputGroup,
-    InputGroupAddon,
-    Table,
-} from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label, InputGroup } from 'reactstrap';
 import { fetchJSON } from '../../helpers/api';
 import AvForm from 'availity-reactstrap-validation/lib/AvForm';
 import AvGroup from 'availity-reactstrap-validation/lib/AvGroup';

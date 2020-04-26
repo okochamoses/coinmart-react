@@ -22,8 +22,8 @@ const Settings = React.lazy(() => import('../pages/settings'));
 const Admin = React.lazy(() => import('../pages/admin'));
 const AdminTransactions = React.lazy(() => import('../pages/admin_transactions'));
 const AdminCrypto = React.lazy(() => import('../pages/adminCrypto'));
-const AdminGiftCard = React.lazy(() => import('../pages/admin_transactions'));
-const Customers = React.lazy(() => import('../pages/admin_transactions'));
+const AdminGiftCard = React.lazy(() => import('../pages/adminGiftCards'));
+const Customers = React.lazy(() => import('../pages/customers'));
 // apps
 const CalendarApp = React.lazy(() => import('../pages/apps/Calendar'));
 const EmailInbox = React.lazy(() => import('../pages/apps/Email/Inbox'));
@@ -194,7 +194,7 @@ const adminRoutes = {
 };
 
 const adminTransactionsRoutes = {
-    path: '/admin-transactions',
+    path: '/transactions-admin',
     name: 'Transactions',
     icon: FeatherIcon.Layers,
     // header: 'Navigation',
@@ -236,7 +236,7 @@ const adminCrypto = {
 };
 
 const customerRoutes = {
-    path: '/admin/users',
+    path: '/customers',
     name: 'Customers',
     icon: FeatherIcon.Users,
     // header: 'Navigation',
@@ -611,12 +611,12 @@ const authProtectedRoutes = [
     adminCrypto,
     adminGiftCard,
     customerRoutes,
-    ...appRoutes,
-    pagesRoutes,
-    componentsRoutes,
-    chartRoutes,
-    formsRoutes,
-    tableRoutes,
+    // ...appRoutes,
+    // pagesRoutes,
+    // componentsRoutes,
+    // chartRoutes,
+    // formsRoutes,
+    // tableRoutes,
 ];
 const allFlattenRoutes = flattenRoutes(allRoutes);
 export { allRoutes, authProtectedRoutes, allFlattenRoutes };
