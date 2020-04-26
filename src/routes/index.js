@@ -19,6 +19,11 @@ const Rates = React.lazy(() => import('../pages/rates'));
 const CompleteTransactions = React.lazy(() => import('../pages/completeTransaction'));
 const TransactionHistory = React.lazy(() => import('../pages/transactionHistory'));
 const Settings = React.lazy(() => import('../pages/settings'));
+const Admin = React.lazy(() => import('../pages/admin'));
+const AdminTransactions = React.lazy(() => import('../pages/admin_transactions'));
+const AdminCrypto = React.lazy(() => import('../pages/adminCrypto'));
+const AdminGiftCard = React.lazy(() => import('../pages/admin_transactions'));
+const Customers = React.lazy(() => import('../pages/admin_transactions'));
 // apps
 const CalendarApp = React.lazy(() => import('../pages/apps/Calendar'));
 const EmailInbox = React.lazy(() => import('../pages/apps/Email/Inbox'));
@@ -101,7 +106,7 @@ const dashboardRoutes = {
     //     text: '1',
     // },
     component: Dashboard,
-    roles: ['USER'],
+    roles: ['USER', 'ADMIN'],
     route: PrivateRoute,
 };
 
@@ -174,6 +179,76 @@ const settingsRoutes = {
     route: PrivateRoute,
 };
 
+const adminRoutes = {
+    path: '/admin',
+    name: 'Admin',
+    icon: FeatherIcon.Settings,
+    // header: 'Navigation',
+    // badge: {
+    //     variant: 'success',
+    //     text: '1',
+    // },
+    component: Admin,
+    roles: ['ADMIN'],
+    route: PrivateRoute,
+};
+
+const adminTransactionsRoutes = {
+    path: '/admin-transactions',
+    name: 'Transactions',
+    icon: FeatherIcon.Layers,
+    // header: 'Navigation',
+    // badge: {
+    //     variant: 'success',
+    //     text: '1',
+    // },
+    component: AdminTransactions,
+    roles: ['ADMIN'],
+    route: PrivateRoute,
+};
+
+const adminGiftCard = {
+    path: '/giftcard/admin',
+    name: 'GiftCard',
+    icon: FeatherIcon.CreditCard,
+    // header: 'Navigation',
+    // badge: {
+    //     variant: 'success',
+    //     text: '1',
+    // },
+    component: AdminGiftCard,
+    roles: ['ADMIN'],
+    route: PrivateRoute,
+};
+
+const adminCrypto = {
+    path: '/crypto/admin',
+    name: 'Cryptocurrencies',
+    icon: FeatherIcon.DollarSign,
+    // header: 'Navigation',
+    // badge: {
+    //     variant: 'success',
+    //     text: '1',
+    // },
+    component: AdminCrypto,
+    roles: ['ADMIN'],
+    route: PrivateRoute,
+};
+
+const customerRoutes = {
+    path: '/admin/users',
+    name: 'Customers',
+    icon: FeatherIcon.Users,
+    // header: 'Navigation',
+    // badge: {
+    //     variant: 'success',
+    //     text: '1',
+    // },
+    component: Customers,
+    roles: ['ADMIN'],
+    route: PrivateRoute,
+};
+
 // apps
 
 const calendarAppRoutes = {
@@ -183,7 +258,7 @@ const calendarAppRoutes = {
     icon: FeatherIcon.Calendar,
     component: CalendarApp,
     route: PrivateRoute,
-    roles: ['Admin'],
+    roles: ['ADMIN', 'USER'], // disable later
 };
 
 const emailAppRoutes = {
@@ -196,21 +271,21 @@ const emailAppRoutes = {
             name: 'Inbox',
             component: EmailInbox,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ADMIN', 'USER'], // disable later
         },
         {
             path: '/apps/email/details',
             name: 'Details',
             component: EmailDetail,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ADMIN', 'USER'], // disable later
         },
         {
             path: '/apps/email/compose',
             name: 'Compose',
             component: EmailCompose,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ADMIN', 'USER'], // disable later
         },
     ],
 };
@@ -225,14 +300,14 @@ const projectAppRoutes = {
             name: 'List',
             component: ProjectList,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ADMIN', 'USER'], // disable later
         },
         {
             path: '/apps/projects/detail',
             name: 'Detail',
             component: ProjectDetail,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ADMIN', 'USER'], // disable later
         },
     ],
 };
@@ -247,14 +322,14 @@ const taskAppRoutes = {
             name: 'List',
             component: TaskList,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ADMIN', 'USER'], // disable later
         },
         {
             path: '/apps/tasks/board',
             name: 'Board',
             component: TaskBoard,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ADMIN', 'USER'], // disable later
         },
     ],
 };
@@ -267,41 +342,42 @@ const pagesRoutes = {
     name: 'Pages',
     header: 'Custom',
     icon: FeatherIcon.FileText,
+    roles: ['ADMIN', 'USER'], // disable later
     children: [
         {
             path: '/pages/starter',
             name: 'Starter',
             component: Starter,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ADMIN', 'USER'], // disable later
         },
         {
             path: '/pages/profile',
             name: 'Profile',
             component: Profile,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ADMIN', 'USER'], // disable later
         },
         {
             path: '/pages/activity',
             name: 'Activity',
             component: Activity,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ADMIN', 'USER'], // disable later
         },
         {
             path: '/pages/invoice',
             name: 'Invoice',
             component: Invoice,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ADMIN', 'USER'], // disable later
         },
         {
             path: '/pages/pricing',
             name: 'Pricing',
             component: Pricing,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ADMIN', 'USER'], // disable later
         },
         {
             path: '/pages/error-404',
@@ -324,13 +400,14 @@ const componentsRoutes = {
     name: 'UI Elements',
     header: 'Components',
     icon: FeatherIcon.Package,
+    roles: ['ADMIN', 'USER'], // disable later
     children: [
         {
             path: '/ui/bscomponents',
             name: 'Bootstrap UI',
             component: BSComponents,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ADMIN', 'USER'], // disable later
         },
         {
             path: '/ui/icons',
@@ -341,14 +418,14 @@ const componentsRoutes = {
                     name: 'Feather Icons',
                     component: FeatherIcons,
                     route: PrivateRoute,
-                    roles: ['Admin'],
+                    roles: ['ADMIN', 'USER'], // disable later
                 },
                 {
                     path: '/ui/icons/unicons',
                     name: 'Unicons Icons',
                     component: UniconsIcons,
                     route: PrivateRoute,
-                    roles: ['Admin'],
+                    roles: ['ADMIN', 'USER'], // disable later
                 },
             ],
         },
@@ -357,7 +434,7 @@ const componentsRoutes = {
             name: 'Widgets',
             component: Widgets,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ADMIN', 'USER'], // disable later
         },
     ],
 };
@@ -368,7 +445,7 @@ const chartRoutes = {
     name: 'Charts',
     component: Charts,
     icon: FeatherIcon.PieChart,
-    roles: ['Admin'],
+    roles: ['ADMIN', 'USER'], // disable later
     route: PrivateRoute,
 };
 
@@ -507,6 +584,11 @@ const allRoutes = [
     ratesRoutes,
     settingsRoutes,
     completeTransactionRoutes,
+    adminRoutes,
+    adminTransactionsRoutes,
+    adminCrypto,
+    adminGiftCard,
+    customerRoutes,
     ...appRoutes,
     pagesRoutes,
     componentsRoutes,
@@ -523,6 +605,12 @@ const authProtectedRoutes = [
     cryptoCurrencyRoutes,
     ratesRoutes,
     settingsRoutes,
+    // Admin protected Routes
+    adminRoutes,
+    adminTransactionsRoutes,
+    adminCrypto,
+    adminGiftCard,
+    customerRoutes,
     ...appRoutes,
     pagesRoutes,
     componentsRoutes,

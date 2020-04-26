@@ -93,7 +93,7 @@ class Login extends Component {
 
                                                     <h6 className="h5 mb-0 mt-4">Welcome back!</h6>
                                                     <p className="text-muted mt-1 mb-4">
-                                                        Enter your email address and password to access admin panel.
+                                                        {/* Enter your email address and password to access admin panel. */}
                                                     </p>
 
                                                     {this.props.error && (

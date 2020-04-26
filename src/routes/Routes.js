@@ -4,7 +4,6 @@ import { BrowserRouter, Switch } from 'react-router-dom';
 // layout HOC
 import withLayout from '../components/Layout';
 import { allFlattenRoutes as routes } from './index';
-import { getLoggedInUser } from '../helpers/authUtils';
 
 const Routes = () => (
     // rendering the router with layout
