@@ -67,8 +67,6 @@ class AdminCrypto extends Component {
             if (response.code === 0) {
                 // console.log(response.data);
                 const rates = response.data;
-                console.log(rates);
-                console.log(rates);
                 rates.sort((a, b) => (a.giftCard.name > b.giftCard.name ? 1 : -1));
                 this.setState({ rates, cryptocurrencyRates: rates, filteredRates: rates });
             }

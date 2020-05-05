@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col, Card, CardBody } from 'reactstrap';
 
 const AssetInfo = ({ selling, buying, giftCard }) => {
+    console.log('BUYING:', buying);
     return (
         <Card>
             <Row className="no-gutters justify-content-center align-items-center">
@@ -24,11 +25,11 @@ const AssetInfo = ({ selling, buying, giftCard }) => {
                                 </small>
                             ) : null}
                             <br></br>
-                            {buying !== undefined || buying === '' ? (
+                            {buying === undefined || buying === null ? null : (
                                 <small className="text-muted">
                                     Buying Rate: {buying} {giftCard.currency}
                                 </small>
-                            ) : null}
+                            )}
                         </p>
                     </CardBody>
                 </Col>

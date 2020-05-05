@@ -51,8 +51,8 @@ class Confirm extends Component {
                                     <CardBody className="p-4">
                                         <div className="mx-auto mb-5">
                                             <a href="/">
-                                                <img src={logo} alt="" height="24" />
-                                                <h3 className="d-inline align-middle ml-1 text-logo">Shreyu</h3>
+                                                <img src={logo} alt="" height="50" />
+                                                <h3 className="d-inline align-middle ml-1 text-logo"></h3>
                                             </a>
                                         </div>
                                         

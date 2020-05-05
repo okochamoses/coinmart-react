@@ -15,13 +15,13 @@ const AssetInfo = ({ buying, selling, giftCard, toggle, updateSelected, toggleRa
     };
 
     return (
-        <Card className="border border-bottom-4">
+        <Card>
             <Row
-                className="no-gutters justify-content-center align-items-center pl-3"
+                className="no-gutters justify-content-center align-items-center pl-3 mb-5"
                 // add hover to change background color and add small shadow
                 style={{
-                    backgroundColor: 'rgb(253, 253, 253)',
-                    // borderRadius: '10px',
+                    backgroundColor: 'rgb(243, 243, 243)',
+                    borderRadius: '10px',
                     borderBottom: `3px solid ${giftCard.active ? 'green' : 'red'}`,
                 }}>
                 <Col md={4} xs={4} className=" justify-content-center align-items-center">

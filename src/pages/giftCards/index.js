@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Row, Col, Card, CardBody } from 'reactstrap';
 import PageTitle from '../../components/PageTitle';
 import AssetInfo from './AssetInfo';
+import { fetchJSON } from '../../helpers/api';
+import { getLoggedInUser } from '../../helpers/authUtils';
 
 class GiftCards extends Component {
     constructor(props) {
@@ -20,98 +22,21 @@ class GiftCards extends Component {
     }
 
     async getCrytoRates() {
-        return [
-            {
-                selling: 7500.52,
-                active: true,
-                giftCard: {
-                    name: 'iTunes',
-                    image: './images/giftcards/itunes.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                selling: 758.52,
-                active: true,
-                giftCard: {
-                    name: 'Google',
-                    image: './images/giftcards/google.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                selling: 758.52,
-                active: true,
-                giftCard: {
-                    name: 'Sephora',
-                    image: './images/giftcards/sephora.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                selling: 758.52,
-                active: true,
-                giftCard: {
-                    name: 'Nike',
-                    image: './images/giftcards/nike.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                selling: 758.52,
-                active: true,
-                giftCard: {
-                    name: 'Steam',
-                    image: './images/giftcards/steam.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                selling: 758.52,
-                active: true,
-                giftCard: {
-                    name: 'Vanilla',
-                    image: './images/giftcards/vanilla.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                selling: 758.52,
-                active: true,
-                giftCard: {
-                    name: 'Netflix',
-                    image: './images/giftcards/netflix.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                selling: 758.52,
-                active: true,
-                giftCard: {
-                    name: 'Amazon',
-                    image: './images/giftcards/amazon.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                selling: 758.52,
-                active: true,
-                giftCard: {
-                    name: 'Walmart',
-                    image: './images/giftcards/walmart.png',
-                    currency: 'USD',
-                },
-            },
-            {
-                selling: 758.52,
-                active: true,
-                giftCard: {
-                    name: 'Walmart Visa',
-                    image: './images/giftcards/walmart_visa.png',
-                    currency: 'USD',
-                },
-            },
-        ];
+        try {
+            const options = {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getLoggedInUser().token },
+            };
+            const response = await fetchJSON('/gift-cards/rates/all', options);
+            if (response.code === 0) {
+                // console.log(response.data);
+                const rates = response.data;
+                rates.sort((a, b) => (a.giftCard.name > b.giftCard.name ? 1 : -1));
+                return rates
+            }
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     filterList = (e) => {

@@ -6,9 +6,10 @@ import { Container, Row, Col, Card, CardBody, FormGroup, Button, Alert, Label, I
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import { Mail } from 'react-feather';
 
-import { isUserAuthenticated } from '../../helpers/authUtils';
+import { isUserAuthenticated, getLoggedInUser } from '../../helpers/authUtils';
 import Loader from '../../components/Loader';
 import logo from '../../assets/images/logo.png';
+import { fetchJSON } from '../../helpers/api';
 
 class ForgetPassword extends Component {
     _isMounted = false;
@@ -44,16 +45,34 @@ class ForgetPassword extends Component {
     /**
      * Handles the submit
      */
-    handleValidSubmit = (event, values) => {
+    handleValidSubmit = async(event, values) => {
         console.log(values);
-        
         this.setState({ isLoading: true });
 
         // You can make actual api call to register here
+        const result = await this.forgotPasswordAPI(values.email);
+        if(result) {
+            // show successful
+        }
 
-        window.setTimeout(() => {
-            this.setState({ isLoading: false, passwordResetSuccessful: true });
-        }, 1000)
+        this.setState({ isLoading: false });
+    }
+
+    async forgotPasswordAPI(email) {
+        try {
+            const options = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify({email})
+            };
+            const response = await fetchJSON('/auth/forgot-password', options);
+            if (response.code === 0) {
+                return true;
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        return false;
     }
 
 
@@ -87,8 +106,7 @@ class ForgetPassword extends Component {
 
                                                 <div className="mx-auto mb-5">
                                                     <a href="/">
-                                                        <img src={logo} alt="" height="24" />
-                                                        <h3 className="d-inline align-middle ml-1 text-logo">Shreyu</h3>
+                                                        <img src={logo} alt="" height="50" />
                                                     </a>
                                                 </div>
 
@@ -129,9 +147,9 @@ class ForgetPassword extends Component {
                                                 <div className="auth-page-sidebar">
                                                     <div className="overlay"></div>
                                                     <div className="auth-user-testimonial">
-                                                        <p className="font-size-24 font-weight-bold text-white mb-1">I simply love it!</p>
+                                                        {/* <p className="font-size-24 font-weight-bold text-white mb-1">I simply love it!</p>
                                                         <p className="lead">"It's a elegent templete. I love it very much!"</p>
-                                                        <p>- Admin User</p>
+                                                        <p>- Admin User</p> */}
                                                     </div>
                                                 </div>
                                             </Col>

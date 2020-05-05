@@ -23,10 +23,12 @@ class Dashboard extends Component {
             filterDate: [oneWeekAgo, new Date()],
             mostUsedGiftCards: [],
             assets: [],
+            transactions: [],
         };
     }
 
     async componentDidMount() {
+        await this.getTransactionHistory();
         const options = {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getLoggedInUser().token },
@@ -35,6 +37,20 @@ class Dashboard extends Component {
         const giftCards = response.data;
         const assetData = await this.getAssetData();
         this.setState({ mostUsedGiftCards: giftCards, assets: assetData });
+    }
+
+    async getTransactionHistory() {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                Authorization: 'Bearer ' + getLoggedInUser().token,
+            },
+        };
+        const response = await fetchJSON('/transactions/find-all', options);
+        if (response.code === 0) {
+            this.setState({ transactions: response.data });
+        }
     }
 
     async getAssetData() {
@@ -81,7 +97,7 @@ class Dashboard extends Component {
                             <MainItem {...this.state.assets[1]} />
                         </Col>
                         <Col xl={6}>
-                            <Orders />
+                            <Orders transactions={this.state.transactions} />
                         </Col>
                     </Row>
 

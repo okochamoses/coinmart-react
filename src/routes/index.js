@@ -5,6 +5,9 @@ import * as FeatherIcon from 'react-feather';
 
 import { isUserAuthenticated, getLoggedInUser } from '../helpers/authUtils';
 
+// Home
+const Home = React.lazy(() => import('../pages/home'));
+
 // auth
 const Login = React.lazy(() => import('../pages/auth/Login'));
 const Logout = React.lazy(() => import('../pages/auth/Logout'));
@@ -76,7 +79,7 @@ const PrivateRoute = ({ component: Component, roles, ...rest }) => (
 
             const loggedInUser = getLoggedInUser();
             // check if route is restricted by role
-            if (roles && roles.indexOf(loggedInUser.role) === -1) {
+            if (roles && roles.indexOf(loggedInUser.role.toUpperCase()) === -1) {
                 // role not authorised so redirect to home page
                 return <Redirect to={{ pathname: '/' }} />;
             }
@@ -91,8 +94,8 @@ const PrivateRoute = ({ component: Component, roles, ...rest }) => (
 const rootRoute = {
     path: '/',
     exact: true,
-    component: () => <Redirect to="/dashboard" />,
-    route: PrivateRoute,
+    component: Home,
+    route: Route,
 };
 
 // dashboards
@@ -106,7 +109,7 @@ const dashboardRoutes = {
     //     text: '1',
     // },
     component: Dashboard,
-    roles: ['USER', 'ADMIN'],
+    roles: ['USER', 'ADMIN', 'SUPER-ADMIN'],
     route: PrivateRoute,
 };
 
@@ -537,12 +540,6 @@ const authRoutes = {
             path: '/account/login',
             name: 'Login',
             component: Login,
-            route: Route,
-        },
-        {
-            path: '/account/logout',
-            name: 'Logout',
-            component: Logout,
             route: Route,
         },
         {

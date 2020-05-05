@@ -3,8 +3,7 @@ import { Row, Col, Card, CardBody, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
-const MainItemWidget = ({ image, name, description, url }) => {
-    console.log(image, name, description, url);
+const MainItemWidget = ({ image, name, description, url = '' }) => {
     return (
         <Row>
             <Col>

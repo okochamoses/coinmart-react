@@ -127,7 +127,7 @@ class Topbar extends Component {
               </li> */}
 
                             {/* <LanguageDropdown tag="li" /> */}
-                            <NotificationDropdown notifications={Notifications} />
+                            {/* <NotificationDropdown notifications={Notifications} /> */}
 
                             <li className="notification-list">
                                 <button

@@ -17,7 +17,6 @@ class Cryptocurrencies extends Component {
 
     async componentDidMount() {
         const cryptocurrencyRates = await this.getCrytoRates();
-        console.log(cryptocurrencyRates);
 
         this.setState({ cryptocurrencyRates, filteredCryptocurrencyRates: cryptocurrencyRates });
     }
@@ -29,7 +28,6 @@ class Cryptocurrencies extends Component {
         };
         const response = await fetchJSON('/cryptocurrencies/rates', options);
         if (response.code === 0) {
-            // console.log(response.data);
             return response.data;
         }
     }
@@ -85,8 +83,8 @@ class Cryptocurrencies extends Component {
                                 <div className="row mt-4 mb-3">
                                     {filteredCryptocurrencyRates.map((cryptocurrencyRate, idx) => {
                                         return (
-                                            <Col md={3}>
-                                                <AssetInfo key={idx} {...cryptocurrencyRate} />
+                                            <Col key={idx} md={3}>
+                                                <AssetInfo {...cryptocurrencyRate} />
                                             </Col>
                                         );
                                     })}
