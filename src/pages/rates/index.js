@@ -110,7 +110,7 @@ class Cryptocurrencies extends Component {
     updateGiftCardImage = (e) => {
         let selected = {};
         this.state.giftCardRates.forEach((r) => {
-            if (r.giftCard.name === e.label) {
+            if (`${r.giftCard.name} [${r.cardType}]` === e.label) {
                 selected = r;
             }
         });

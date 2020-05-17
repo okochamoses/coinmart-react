@@ -35,7 +35,7 @@ export default function AssetSection() {
                 // console.log(response.data);
                 const rates = response.data;
                 // rates.sort((a, b) => (a.giftCard.name > b.giftCard.name ? 1 : -1));
-                setGiftCards(rates.slice(0, 4));
+                setGiftCards(rates.slice(0, 8));
             }
         } catch (e) {
             console.log(e);

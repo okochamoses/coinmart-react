@@ -84,6 +84,10 @@ function* register({ payload: { firstName, lastName, username, email, password }
 
     try {
         const response = yield call(fetchJSON, '/authenticate/user/register', options);
+        
+        if (response.code !== 0) {
+            return yield put(registerUserFailed(response.description));
+        }
         yield put(registerUserSuccess(response));
     } catch (error) {
         let message;
@@ -113,6 +117,9 @@ function* forgetPassword({ payload: { username } }) {
 
     try {
         const response = yield call(fetchJSON, '/users/password-reset', options);
+        if (response.code !== 0) {
+            return yield put(forgetPasswordFailed(response.description));
+        }
         yield put(forgetPasswordSuccess(response.message));
     } catch (error) {
         let message;

@@ -1,10 +1,20 @@
 import React from 'react';
 import { Row, Col, Card, CardBody, Button } from 'reactstrap';
 
-const AssetInfo = ({ buying, selling, giftCard, toggle, updateSelected, toggleRates, getRates, toggleStatus }) => {
-    // console.log(giftCard);
+const AssetInfo = ({
+    buying,
+    selling,
+    cardType,
+    giftCard,
+    toggle,
+    updateSelected,
+    toggleRates,
+    getRates,
+    toggleStatus,
+}) => {
+    console.log(cardType);
     const toggleModal = () => {
-        updateSelected(giftCard.name, giftCard.id);
+        updateSelected(giftCard.name, giftCard.id, cardType);
         toggle();
     };
 
@@ -48,6 +58,7 @@ const AssetInfo = ({ buying, selling, giftCard, toggle, updateSelected, toggleRa
                                     Buying Rate: {buying} {giftCard.currency}
                                 </small>
                             ) : null}
+                            <small className="text-muted">Card Type: {cardType}</small>
                         </p>
                     </CardBody>
                 </Col>

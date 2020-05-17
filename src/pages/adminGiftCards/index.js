@@ -47,9 +47,8 @@ class AdminCrypto extends Component {
         }));
     };
 
-    updateSelected = async (name, id) => {
-        console.log(id);
-        await this.setState({ selected: name, id });
+    updateSelected = async (name, id, cardType) => {
+        await this.setState({ selected: name, id, cardType });
     };
 
     async componentDidMount() {
@@ -127,7 +126,7 @@ class AdminCrypto extends Component {
     filterList = (e) => {
         const searchValue = e.target.value;
         const filtered = this.state.cryptocurrencyRates.filter((rates) =>
-            rates.cryptocurrency.name.toLowerCase().includes(searchValue)
+            rates.giftCard.name.toLowerCase().includes(searchValue)
         );
         this.setState({ filteredRates: filtered });
     };
@@ -196,6 +195,8 @@ class AdminCrypto extends Component {
                                     <ChangeRateModal
                                         asset={this.state.selected}
                                         id={this.state.id}
+                                        id={this.state.id}
+                                        cardType={this.state.cardType}
                                         loader={this.state.loader}
                                         modal={this.state.modal}
                                         toggle={this.toggle}

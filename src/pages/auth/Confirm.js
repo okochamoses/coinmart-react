@@ -57,8 +57,8 @@ class Confirm extends Component {
                                         </div>
                                         
                                         <h6 className="h5 mb-0 mt-4">Confirm your email</h6>
-                                        <p className="text-muted mt-3 mb-3">Your account has been successfully registered. To
-                                            complete the verification process, please check your email for a validation request.</p>
+                                        <p className="text-muted mt-3 mb-3">Your account has been successfully registered. Please login to contiue</p>
+                                        <Link to="/account/login"><p>Login</p></Link>
                                     </CardBody>
                                 </Card>
                             </Col>

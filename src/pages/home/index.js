@@ -21,8 +21,10 @@ import styles from '../../assets/jss/material-kit-react/views/landingPage.js';
 import ProductSection from './Sections/ProductSection.js';
 import WorkSection from './Sections/WorkSection.js';
 import AssetSection from './Sections/AssetSection.js';
+import Calculator from './Calculator.js';
 import { Link, Redirect } from 'react-router-dom';
 import { getLoggedInUser } from '../../helpers/authUtils.js';
+import Pills from './Sections/Pills.js';
 
 const dashboardRoutes = [];
 
@@ -51,7 +53,7 @@ export default function LandingPage(props) {
             <Parallax image={require('../../assets/images/white-bg.jpg')}>
                 <div className={classes.container}>
                     <GridContainer>
-                        <GridItem xs={12} sm={12} md={6}>
+                        <GridItem xs={12} sm={12} md={6} style={{marginTop: "60px"}}>
                             <h1 className={classes.title} style={{ color: 'black' }}>
                                 Trade cryptocurrencies and giftcards
                             </h1>
@@ -71,15 +73,19 @@ export default function LandingPage(props) {
                             </Link>
                         </GridItem>
                         <GridItem xs={12} sm={12} md={6}>
-                            <img src={require('../../assets/images/giftcard2.png')} alt="Gift Cards and Crypto" />
+                            <img src={require('../../assets/images/giftcard2.png')} width="100%" alt="Gift Cards and Crypto" />
                         </GridItem>
                     </GridContainer>
                 </div>
             </Parallax>
-            <div className={classNames(classes.main, classes.mainRaised)}>
+            <div className={classNames(classes.main)}>
                 <div className={classes.container}>
-                    <ProductSection />
-                    <AssetSection />
+                    {/* <ProductSection /> */}
+                    <Pills />
+                    <hr />
+                    <Calculator />
+                    <hr />
+                    <AssetSection/>
                     {/* <WorkSection /> */}
                 </div>
             </div>

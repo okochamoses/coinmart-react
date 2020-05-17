@@ -73,7 +73,7 @@ class Register extends Component {
             <React.Fragment>
                 {this.renderRedirectToRoot()}
 
-                {Object.keys(this.props.user || {}).length > 0 && this.renderRedirectToConfirm()}
+                {/* {Object.keys(this.props.user || {}).length > 0 && this.renderRedirectToConfirm()} */}
 
                 {(this._isMounted || !isAuthTokenValid) && (
                     <div className="account-pages mt-5 mb-5">

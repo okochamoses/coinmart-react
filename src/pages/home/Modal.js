@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { getLoggedInUser } from '../../helpers/authUtils';
 import { fetchJSON } from '../../helpers/api';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 class Modals extends Component {
     constructor(props) {
@@ -131,9 +131,9 @@ class Modals extends Component {
                         </table>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.initiateTransaction}>
-                            Proceed
-                        </Button>
+                        <Link to="/account/login">
+                            <Button color="primary">Login</Button>
+                        </Link>
                         <Button color="secondary" className="ml-1" onClick={this.toggle}>
                             Cancel
                         </Button>

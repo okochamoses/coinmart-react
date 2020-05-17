@@ -35,6 +35,7 @@ export default function Footer(props) {
                         <ListItem className={classes.inlineBlock}>
                                 <Link to="/account/login">Login</Link>
                         </ListItem>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         <ListItem className={classes.inlineBlock}>
                             <Link to="/account/register">Register</Link>
                         </ListItem>

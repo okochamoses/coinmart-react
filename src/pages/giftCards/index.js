@@ -42,7 +42,7 @@ class GiftCards extends Component {
     filterList = (e) => {
         const searchValue = e.target.value;
         const filtered = this.state.giftCardRates.filter((rates) =>
-            rates.giftCard.name.toLowerCase().includes(searchValue)
+            rates.giftCard.name.toLowerCase().includes(searchValue.toLowerCase())
         );
         this.setState({ filteredGiftCardRates: filtered });
     };
@@ -89,7 +89,7 @@ class GiftCards extends Component {
                                 <div className="row mt-4 mb-3">
                                     {filteredGiftCardRates.map((giftCardRate, idx) => {
                                         return (
-                                            <Col md={4}>
+                                            <Col md={4} key={idx}>
                                                 <AssetInfo key={idx} {...giftCardRate} />
                                             </Col>
                                         );

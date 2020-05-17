@@ -8,13 +8,12 @@ import AvFeedback from 'availity-reactstrap-validation/lib/AvFeedback';
 import Loader from '../../components/Loader';
 import { getLoggedInUser } from '../../helpers/authUtils';
 
-const ChangeRateModal = ({ id, asset, modal, toggle, loader, toggleLoader, refresh }) => {
+const ChangeRateModal = ({ id, asset, cardType, modal, toggle, loader, toggleLoader, refresh }) => {
     const handleValidSubmit = (event, values) => {
-        changeRates(asset, values.buying, values.selling);
+        changeRates(asset, values.buying, values.selling, cardType);
     };
 
-    const changeRates = async (asset, buying, selling) => {
-        console.log(toggleLoader);
+    const changeRates = async (asset, buying, selling, cardType) => {
         toggleLoader();
         const options = {
             method: 'POST',
@@ -22,7 +21,7 @@ const ChangeRateModal = ({ id, asset, modal, toggle, loader, toggleLoader, refre
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + getLoggedInUser().token,
             },
-            body: JSON.stringify({ buying, selling, giftCard: { id } }),
+            body: JSON.stringify({ buying, selling, giftCard: { id }, cardType }),
         };
         const response = await fetchJSON(`/gift-cards/rates`, options);
         refresh();
@@ -47,9 +46,9 @@ const ChangeRateModal = ({ id, asset, modal, toggle, loader, toggleLoader, refre
                     </AvGroup>
 
                     <AvGroup className="mb-3">
-                        <Label for="buying">Buying</Label>
+                        <Label for="cardType">Card Type</Label>
                         <InputGroup>
-                            <AvInput type="number" name="buying" id="buying" required />
+                            <AvInput type="text" name="cardType" id="cardType" disabled value={cardType} />
                         </InputGroup>
                         <AvFeedback>Please enter a valid amount</AvFeedback>
                     </AvGroup>

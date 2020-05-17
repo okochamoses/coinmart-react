@@ -1,8 +1,7 @@
 import React from 'react';
 import { Row, Col, Card, CardBody } from 'reactstrap';
 
-const AssetInfo = ({ selling, buying, giftCard }) => {
-    console.log('BUYING:', buying);
+const AssetInfo = ({ selling, buying, giftCard, cardType }) => {
     return (
         <Card>
             <Row className="no-gutters justify-content-center align-items-center">
@@ -15,10 +14,10 @@ const AssetInfo = ({ selling, buying, giftCard }) => {
                     />
                 </Col>
                 <Col md={7} xs={8}>
-                    <CardBody>
-                        <h5 className="card-title font-size-16">{giftCard.name}</h5>
+                    <CardBody style={{ textAlign: 'left' }}>
+                        <h5 className="">{giftCard.name}</h5>
 
-                        <p className="card-text">
+                        <p className="">
                             {selling !== undefined || selling === '' ? (
                                 <small className="text-muted">
                                     Selling Rate: {selling} {giftCard.currency}
@@ -30,6 +29,7 @@ const AssetInfo = ({ selling, buying, giftCard }) => {
                                     Buying Rate: {buying} {giftCard.currency}
                                 </small>
                             )}
+                            <small className="text-muted">Card Type: {cardType}</small>
                         </p>
                     </CardBody>
                 </Col>
