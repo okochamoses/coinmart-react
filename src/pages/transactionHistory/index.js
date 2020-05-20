@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, CardBody, Table } from 'reactstrap';
+import { Row, Col, Card, CardBody, Table, Button } from 'reactstrap';
 
 import PageTitle from '../../components/PageTitle';
 import { getLoggedInUser } from '../../helpers/authUtils';
 import { fetchJSON } from '../../helpers/api';
 import noTransaction from '../../assets/images/projects/no_transactions.jpg';
+import { Link } from 'react-router-dom';
 
 class TransactionHistory extends Component {
     constructor(props) {
@@ -29,6 +30,44 @@ class TransactionHistory extends Component {
             this.setState({ transactions: response.data });
         }
     }
+
+    renderStatus = (status, reference) => {
+        if (status === 'PENDING') {
+            return (
+                <React.Fragment>
+                    <span className="badge badge-soft-warning py-1">PENDING</span>
+                </React.Fragment>
+            );
+        }
+        if (status === 'DECLINED') {
+            return (
+                <React.Fragment>
+                    <span className="badge badge-soft-danger py-1">DECLINED</span>
+                </React.Fragment>
+            );
+        }
+        if (status === 'APPROVED') {
+            return (
+                <React.Fragment>
+                    <span className="badge badge-soft-success py-1">COMPLETED</span>
+                </React.Fragment>
+            );
+        }
+    };
+
+    renderButton = (status, reference) => {
+        if (status === 'PENDING') {
+            return (
+                <Link to={`./complete-transaction?reference=${reference}`}>
+                    <React.Fragment>
+                        <Button color="danger" size="xs">
+                            Complete Transaction
+                        </Button>
+                    </React.Fragment>
+                </Link>
+            );
+        }
+    };
 
     render() {
         const { transactions } = this.state;
@@ -76,20 +115,16 @@ class TransactionHistory extends Component {
                                                     <tr key={idx}>
                                                         <td>{txn.reference}</td>
                                                         <td>{txn.asset}</td>
-                                                        <td>{txn.txnForm}</td>
+                                                        <td>
+                                                            {txn.txnForm === 'GIFT_CARD'
+                                                                ? 'Gift Card'
+                                                                : 'Cryptocurrency'}
+                                                        </td>
                                                         <td>{txn.txnType}</td>
                                                         <td>{txn.units}</td>
                                                         <td>{txn.value}</td>
-                                                        <td>
-                                                            <span className="badge badge-soft-warning py-1">
-                                                                Pending
-                                                            </span>
-                                                        </td>
-                                                        <td>
-                                                            <span className="badge badge-soft-danger py-1">
-                                                                Complete Transaction
-                                                            </span>
-                                                        </td>
+                                                        <td>{this.renderStatus(txn.status, txn.reference)}</td>
+                                                        <td>{this.renderButton(txn.status, txn.reference)}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>
