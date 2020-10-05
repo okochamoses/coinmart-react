@@ -17,6 +17,7 @@ import { getLoggedInUser } from '../../helpers/authUtils';
 const INIT_STATE = {
     user: getLoggedInUser(),
     loading: false,
+    registered: false
 };
 
 const Auth = (state = INIT_STATE, action) => {
@@ -30,7 +31,7 @@ const Auth = (state = INIT_STATE, action) => {
         case REGISTER_USER:
             return { ...state, loading: true };
         case REGISTER_USER_SUCCESS:
-            return { ...state, user: action.payload, loading: false, error: null };
+            return { ...state, user: action.payload, loading: false, error: null, registered: true };
         case REGISTER_USER_FAILED:
             return { ...state, error: action.payload, loading: false };
         case LOGOUT_USER:

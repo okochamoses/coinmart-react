@@ -129,7 +129,7 @@ class ForgetPassword extends Component {
                                                                     <Mail className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput type="text" name="email" id="email" placeholder="hello@coderthemes.com" 
+                                                            <AvInput type="text" name="email" id="email" placeholder="Enter your email" 
                                                                 value={this.state.email} required />
                                                         </InputGroup>
                                                         

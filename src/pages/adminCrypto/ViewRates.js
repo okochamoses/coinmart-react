@@ -37,9 +37,36 @@ class ViewRates extends Component {
         },
     ];
 
+    renderBuying(rates) {
+        let buyString = '';
+        // rates.forEach((rate) => {
+        //     buyString += rate.buying.amountRange + rate.buying.amount;
+        // });
+        return buyString;
+    }
+
     // display on a table with paginationrender
     render() {
+        console.log(this.props.rates);
+
+        // const a = [
+        //     {
+        //         buying: this.renderBuying(this.props.rates),
+        //     },
+        // ];
+
+        // console.log(a);
+
+        const processedRates = [];
+        this.props.rates.forEach((rate) => {
+            // console.log(rate)
+            rate.buying = rate.buying[0] ? rate.buying[0].amount : rate.buying;
+            rate.selling = rate.selling[0] ? rate.selling[0].amount : rate.selling;
+            processedRates.push(rate);
+        });
+
         const records = this.props.rates;
+
         const { SearchBar } = Search;
         const { ExportCSVButton } = CSVExport;
         const columns = this.columns;

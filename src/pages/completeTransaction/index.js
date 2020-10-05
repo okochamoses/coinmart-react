@@ -4,17 +4,21 @@ import { Row, Col, Card, CardBody } from 'reactstrap';
 import PageTitle from '../../components/PageTitle';
 import { getLoggedInUser } from '../../helpers/authUtils';
 import { fetchJSON } from '../../helpers/api';
+import { Redirect, Link } from 'react-router-dom';
 
 class CompleteTransaction extends Component {
     constructor(props) {
         super(props);
         this.state = { transaction: {} };
+        console.log(getLoggedInUser())
     }
 
     async componentDidMount() {
         await this.getTransactionByID();
-        this.loadScripts();
-        this.tawktoCredentials();
+        // this.loadScripts();
+        if (window.Tawk_API.isChatMinimized()) {
+            window.Tawk_API.toggle();
+        }
     }
     async loadScripts() {
         // var Tawk_API = Tawk_API || {};
@@ -45,16 +49,21 @@ class CompleteTransaction extends Component {
         const response = await fetchJSON('/transactions/reference', options);
         if (response.code === 0) {
             this.setState({ transaction: response.data });
+            if(response.data.status !== "PENDING") {
+                window.location.replace("/transactions")
+            }
+            console.log(response.data)
         }
     }
 
-    tawktoCredentials() {
+    tawktoCredentials(transaction) {
         setTimeout(function () {
             const user = getLoggedInUser();
+
             if (window.Tawk_API !== undefined) {
                 window.Tawk_API.setAttributes(
                     {
-                        name: `${user.firstName} ${user.lastName} 1`,
+                        name: `${user.firstName} ${user.lastName}`,
                         email: user.username,
                     },
                     function (error) {
@@ -65,23 +74,31 @@ class CompleteTransaction extends Component {
                 window.Tawk_API.addEvent(
                     'Transaction',
                     {
-                        type: 'Gift card',
-                        name: 'Netflix',
-                        transactionType: 'Sell',
-                        price: '50 USD',
+                        identity: `${user.firstName} ${user.lastName}`,
+                        email: user.username,
+                        username: getLoggedInUser().username,
+                        type: transaction.txnForm,
+                        name: transaction.asset,
+                        transactionType: transaction.txnType,
+                        price: transaction.units + " USD",
+                        amountToTransfer: transaction.value + " NGN"
                     },
                     function (error) {
-                        console.log(error);
+                        // console.log(error);
                     }
                 );
+
+
             } else {
                 console.log('Could not reach tawk.to api');
             }
-        }, 7000);
+        }, 500);
     }
 
     render() {
         const { transaction } = this.state;
+
+        this.tawktoCredentials(transaction);
         return (
             <React.Fragment>
                 <Row className="page-title justify-content-md-center">
@@ -128,7 +145,7 @@ class CompleteTransaction extends Component {
                                         </tr>
                                         <tr>
                                             <td>Transacation Status</td>
-                                            <td>PENDING</td>
+                        <td>{transaction.status}</td>
                                         </tr>
                                     </tbody>
                                 </table>

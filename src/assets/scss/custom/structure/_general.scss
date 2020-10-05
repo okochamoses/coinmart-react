@@ -11,3 +11,9 @@ body {
   padding-bottom: 60px;
   overflow-x: hidden;
 }
+
+.asset-info {
+  &:hover {
+    color: #FF7A00;
+  }
+}

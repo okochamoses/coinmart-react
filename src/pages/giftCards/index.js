@@ -4,6 +4,7 @@ import PageTitle from '../../components/PageTitle';
 import AssetInfo from './AssetInfo';
 import { fetchJSON } from '../../helpers/api';
 import { getLoggedInUser } from '../../helpers/authUtils';
+import { Link } from 'react-router-dom';
 
 class GiftCards extends Component {
     constructor(props) {
@@ -15,7 +16,7 @@ class GiftCards extends Component {
         };
     }
 
-    async componentWillMount() {
+    async UNSAFE_componentWillMount() {
         const giftCardRates = await this.getCrytoRates();
 
         this.setState({ giftCardRates, filteredGiftCardRates: giftCardRates });
@@ -31,7 +32,7 @@ class GiftCards extends Component {
             if (response.code === 0) {
                 // console.log(response.data);
                 const rates = response.data;
-                rates.sort((a, b) => (a.giftCard.name > b.giftCard.name ? 1 : -1));
+                rates.sort((a, b) => (a.giftCard.name.toLowerCase() > b.giftCard.name.toLowerCase() ? 1 : -1));
                 return rates
             }
         } catch (e) {
@@ -90,7 +91,9 @@ class GiftCards extends Component {
                                     {filteredGiftCardRates.map((giftCardRate, idx) => {
                                         return (
                                             <Col md={4} key={idx}>
-                                                <AssetInfo key={idx} {...giftCardRate} />
+                                                <Link to={`/transfer?name=${giftCardRate.giftCard.name}`}>
+                                                    <AssetInfo key={idx} {...giftCardRate} />
+                                                </Link>
                                             </Col>
                                         );
                                     })}

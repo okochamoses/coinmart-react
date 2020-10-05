@@ -27,6 +27,16 @@ const InfoBar = ({
         }
         return options;
     };
+
+    const renderDefaultTxnType = (txnType) => {
+        const v = {selling: { value: 'selling', label: 'Sell', }, buying: { value: 'buying', label: 'Sell', }}
+        if(txnType === "selling") return v.selling
+        if(txnType === "buying") return v.buying
+        if(txnType === "") return ""
+    }
+
+    const { selectedCrypto, amount, txnType } = parentState;
+    console.log(renderDefaultTxnType(txnType))
     return (
         <React.Fragment>
             <Form>
@@ -58,14 +68,14 @@ const InfoBar = ({
                         type="number"
                         name="amount"
                         id="text"
-                        min={50}
+                        min={25}
                         placeholder="Enter amount"
                         onChange={updateAmounr}
                     />
 
-                    <FormText>Minimum gift card amount: $50</FormText>
+                    {/* <FormText>Minimum amount: $50</FormText> */}
                 </FormGroup>
-                <Modals activeTab={activeTab} parentState={parentState} />
+                <Modals activeTab={activeTab} parentState={parentState}/>
             </Form>
         </React.Fragment>
     );

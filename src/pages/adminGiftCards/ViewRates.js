@@ -39,7 +39,14 @@ class ViewRates extends Component {
 
     // display on a table with paginationrender
     render() {
-        const records = this.props.rates;
+        const processedRates = [];
+        this.props.rates.forEach((rate) => {
+            rate.buying = rate.buying[0] ? rate.buying[0].amount : rate.buying;
+            rate.selling = rate.selling[0] ? rate.selling[0].amount : rate.selling;
+            processedRates.push(rate);
+        });
+
+        const records = processedRates;
         const { SearchBar } = Search;
         const { ExportCSVButton } = CSVExport;
         const columns = this.columns;

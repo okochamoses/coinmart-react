@@ -4,6 +4,7 @@ import PageTitle from '../../components/PageTitle';
 import AssetInfo from './AssetInfo';
 import { getLoggedInUser } from '../../helpers/authUtils';
 import { fetchJSON } from '../../helpers/api';
+import { Link } from 'react-router-dom';
 
 class Cryptocurrencies extends Component {
     constructor(props) {
@@ -84,7 +85,9 @@ class Cryptocurrencies extends Component {
                                     {filteredCryptocurrencyRates.map((cryptocurrencyRate, idx) => {
                                         return (
                                             <Col key={idx} md={3}>
-                                                <AssetInfo {...cryptocurrencyRate} />
+                                                <Link to={`/transfer?name=${cryptocurrencyRate.cryptocurrency.name}`}>
+                                                    <AssetInfo {...cryptocurrencyRate} />
+                                                </Link>
                                             </Col>
                                         );
                                     })}

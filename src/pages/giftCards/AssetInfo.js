@@ -2,8 +2,16 @@ import React from 'react';
 import { Row, Col, Card, CardBody } from 'reactstrap';
 
 const AssetInfo = ({ selling, buying, giftCard, cardType }) => {
+    const styles = {
+        asset: {
+            '&:hover': {
+                 backgroundColor: 'red',
+            },       
+        },
+    };
+
     return (
-        <Card>
+        <Card style={styles.asset}>
             <Row className="no-gutters justify-content-center align-items-center">
                 <Col md={3} xs={2} className=" justify-content-center align-items-center">
                     <img
@@ -20,13 +28,13 @@ const AssetInfo = ({ selling, buying, giftCard, cardType }) => {
                         <p className="">
                             {selling !== undefined || selling === '' ? (
                                 <small className="text-muted">
-                                    Selling Rate: {selling} {giftCard.currency}
+                                    Selling Rate: {selling[0] ? selling[0].amount : selling} {giftCard.currency}
                                 </small>
                             ) : null}
                             <br></br>
                             {buying === undefined || buying === null ? null : (
                                 <small className="text-muted">
-                                    Buying Rate: {buying} {giftCard.currency}
+                                    Buying Rate: {buying[0] ? buying[0].amount : buying} {giftCard.currency}
                                 </small>
                             )}
                             <small className="text-muted">Card Type: {cardType}</small>

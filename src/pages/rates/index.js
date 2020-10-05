@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
 import classnames from 'classnames';
-import CryptoJS from 'crypto-js';
 
 import PageTitle from '../../components/PageTitle';
 import InfoBar from './InfoBar';
@@ -44,6 +43,16 @@ class Cryptocurrencies extends Component {
     async componentDidMount() {
         let cryptocurrencyRates = await this.getCryptoRates();
         let giftCardRates = await this.getGiftCardRates();
+
+        // Sort gift card rates into alphabetical order
+        giftCardRates.sort((a, b) =>
+            a.giftCard.name.toLowerCase() > b.giftCard.name.toLowerCase()
+                ? 1
+                : b.giftCard.name.toLowerCase() > a.giftCard.name.toLowerCase()
+                ? -1
+                : 0
+        );
+        
         cryptocurrencyRates = cryptocurrencyRates.map((c) => {
             return { ...c, ...{ asset: c.cryptocurrency } };
         });
@@ -80,7 +89,7 @@ class Cryptocurrencies extends Component {
         };
         const response = await fetchJSON('/cryptocurrencies/rates', options);
         if (response.code === 0) {
-            console.log(response.data);
+            // console.log(response.data);
             return response.data;
         }
     }
@@ -92,7 +101,7 @@ class Cryptocurrencies extends Component {
         };
         const response = await fetchJSON('/gift-cards/rates', options);
         if (response.code === 0) {
-            console.log(response.data);
+            // console.log(response.data);
             return response.data;
         }
     }
@@ -196,6 +205,8 @@ class Cryptocurrencies extends Component {
                                                                         updateAmounr={this.updateAmounr}
                                                                         updateTxnType={this.updateTxnType}
                                                                         parentState={this.state}
+                                                                        selectedCrypto={this.state.selectedCrypto}
+                                                                        amount={this.state.amount}
                                                                     />
                                                                 </Col>
                                                                 <Col

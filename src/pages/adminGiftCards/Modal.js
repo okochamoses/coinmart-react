@@ -10,7 +10,34 @@ import { getLoggedInUser } from '../../helpers/authUtils';
 
 const ChangeRateModal = ({ id, asset, cardType, modal, toggle, loader, toggleLoader, refresh }) => {
     const handleValidSubmit = (event, values) => {
-        changeRates(asset, values.buying, values.selling, cardType);
+        
+        let range = assetList[asset];
+        range = range === undefined ? ['R25_1000000'] : range;
+
+        const selling = range.map(r => {
+            return {
+                "amount": values[r]/1,
+                "amountRange": r
+            }
+        });
+        changeRates(asset, values.buying, selling, cardType);
+    };
+
+    const assetList = {
+        iTunes: ['R25_50', 'R50_100'],
+        Steam: ['R20_50', 'R50_100', 'R100_500'],
+        Google: ['R25_50', 'R50_500'],
+        Vanilla: ['R100_300', 'R300_500'],
+        Sephora: ['R50_100', 'R100_500'],
+        Nike: ['R100_200', 'R200_500'],
+        'American Express': ['R100_300', 'R300_500'],
+        'Walmart Visa': ['R100_300', 'R300_500'],
+        Walmart: ['R100_300', 'R300_500'],
+        Ebay: ['R50_100', 'R100_500'],
+        Visa: ['R100_200', 'R200_500'],
+        'Amazon Debit Receipt': ['R25_50', 'R50_100', 'R100_500'],
+        Nordstrom: ['R100_500'],
+        'Razer Gold': ['R25_100', 'R100_500'],
     };
 
     const changeRates = async (asset, buying, selling, cardType) => {
@@ -21,7 +48,7 @@ const ChangeRateModal = ({ id, asset, cardType, modal, toggle, loader, toggleLoa
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + getLoggedInUser().token,
             },
-            body: JSON.stringify({ buying, selling, giftCard: { id }, cardType }),
+            body: JSON.stringify({ buying:[], selling, giftCard: { id }, cardType }),
         };
         const response = await fetchJSON(`/gift-cards/rates`, options);
         refresh();
@@ -29,6 +56,23 @@ const ChangeRateModal = ({ id, asset, cardType, modal, toggle, loader, toggleLoa
         if (response.code === 0) {
             // show an approval message
         }
+    };
+
+    const rangeToText = (range) => {
+        const splitVals =  range.slice(1).split('_'); // e.g ([50, 200])
+        return "$" + splitVals[0] +  ' - $' + (splitVals[1]/1);
+    };
+
+    const renderInputs = (asset) => {
+        let range = assetList[asset];
+        range = range === undefined ? ['R25_1000000'] : range;
+        return range.map((r) => (
+            <AvGroup className="mb-3">
+                <Label for="selling">Selling {rangeToText(r)}</Label>
+                <InputGroup><AvInput type="number" name={r} id={r} required /></InputGroup>
+                <AvFeedback>Please enter a valid amount</AvFeedback>
+            </AvGroup>
+        ));
     };
 
     return (
@@ -52,14 +96,8 @@ const ChangeRateModal = ({ id, asset, cardType, modal, toggle, loader, toggleLoa
                         </InputGroup>
                         <AvFeedback>Please enter a valid amount</AvFeedback>
                     </AvGroup>
-
-                    <AvGroup className="mb-3">
-                        <Label for="selling">Selling</Label>
-                        <InputGroup>
-                            <AvInput type="number" name="selling" id="selling" required />
-                        </InputGroup>
-                        <AvFeedback>Please enter a valid amount</AvFeedback>
-                    </AvGroup>
+                    
+                    {modal ? renderInputs(asset) : null}
                 </ModalBody>
                 <ModalFooter>
                     <Button type="submit" color="primary">

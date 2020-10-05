@@ -28,6 +28,7 @@ class Login extends Component {
 
     constructor(props) {
         super(props);
+        this.search = this.props.location.search === "?success"
 
         this.handleValidSubmit = this.handleValidSubmit.bind(this);
         this.state = {
@@ -102,6 +103,12 @@ class Login extends Component {
                                                         </Alert>
                                                     )}
 
+                                                    {this.search && (
+                                                        <Alert color="success" isOpen={this.search}>
+                                                            <div>Your registration was successful please login to continue</div>
+                                                        </Alert>
+                                                    )}
+
                                                     <AvForm
                                                         onValidSubmit={this.handleValidSubmit}
                                                         className="authentication-form">
@@ -117,7 +124,7 @@ class Login extends Component {
                                                                     type="text"
                                                                     name="username"
                                                                     id="username"
-                                                                    placeholder="hello@coderthemes.com"
+                                                                    placeholder="Enter your email"
                                                                     value={this.state.username}
                                                                     required
                                                                 />

@@ -67,7 +67,7 @@ class AdminCrypto extends Component {
                 // console.log(response.data);
                 const rates = response.data;
                 rates.sort((a, b) => (a.giftCard.name > b.giftCard.name ? 1 : -1));
-                this.setState({ rates, cryptocurrencyRates: rates, filteredRates: rates });
+                this.setState({ rates, filteredRates: rates });
             }
         } catch (e) {
             console.log(e);
@@ -125,7 +125,7 @@ class AdminCrypto extends Component {
 
     filterList = (e) => {
         const searchValue = e.target.value;
-        const filtered = this.state.cryptocurrencyRates.filter((rates) =>
+        const filtered = this.state.rates.filter((rates) =>
             rates.giftCard.name.toLowerCase().includes(searchValue)
         );
         this.setState({ filteredRates: filtered });
@@ -173,7 +173,7 @@ class AdminCrypto extends Component {
                                 </div>
 
                                 <div className="row mt-4 mb-3">
-                                    {filteredRates.map((rate, idx) => {
+                                    {this.state.rates.map((rate, idx) => {
                                         return (
                                             <Col key={idx} md={3}>
                                                 <AssetInfo
@@ -186,7 +186,10 @@ class AdminCrypto extends Component {
                                                     updateSelected={this.updateSelected}
                                                     getRates={this.getRatesById}
                                                     key={idx}
-                                                    {...rate}
+                                                    buying={rate.buying}
+                                                    selling={rate.selling}
+                                                    cardType={rate.cardType}
+                                                    giftCard={rate.giftCard}
                                                 />
                                             </Col>
                                         );

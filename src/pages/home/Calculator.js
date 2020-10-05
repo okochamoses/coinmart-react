@@ -25,22 +25,6 @@ class Cryptocurrencies extends Component {
         this.toggle = this.toggle.bind(this);
     }
 
-    async loadScripts() {
-        // var Tawk_API = Tawk_API || {};
-
-        // var Tawk_LoadStart = new Date();
-
-        await (function () {
-            var s1 = document.createElement('script'),
-                s0 = document.getElementsByTagName('script')[0];
-            s1.async = true;
-            s1.src = 'https://embed.tawk.to/5e9a2f8569e9320caac4d6dc/1e654lr8v';
-            s1.charset = 'UTF-8';
-            s1.setAttribute('crossorigin', '*');
-            s0.parentNode.insertBefore(s1, s0);
-        })();
-    }
-
     /**
      * Toggle the tab
      */
@@ -57,9 +41,9 @@ class Cryptocurrencies extends Component {
     };
 
     async componentDidMount() {
-        this.loadScripts();
         let cryptocurrencyRates = await this.getCryptoRates();
         let giftCardRates = await this.getGiftCardRates();
+        giftCardRates = giftCardRates.sort()
         cryptocurrencyRates = cryptocurrencyRates.map((c) => {
             return { ...c, ...{ asset: c.cryptocurrency } };
         });
@@ -75,7 +59,7 @@ class Cryptocurrencies extends Component {
         };
         const response = await fetchJSON('/cryptocurrencies/rates', options);
         if (response.code === 0) {
-            console.log(response.data);
+            // console.log(response.data);
             return response.data;
         }
     }
@@ -87,7 +71,7 @@ class Cryptocurrencies extends Component {
         };
         const response = await fetchJSON('/gift-cards/rates', options);
         if (response.code === 0) {
-            console.log(response.data);
+            // console.log(response.data);
             return response.data;
         }
     }
@@ -104,6 +88,7 @@ class Cryptocurrencies extends Component {
 
     updateGiftCardImage = (e) => {
         let selected = {};
+        // this.state.giftCardRates.sort()
         this.state.giftCardRates.forEach((r) => {
             if (`${r.giftCard.name} [${r.cardType}]` === e.label) {
                 selected = r;
@@ -142,8 +127,8 @@ class Cryptocurrencies extends Component {
             <React.Fragment>
                 <Card>
                     <CardBody>
-                        <h2 style={{textAlign: "center"}}>Rates Calculator</h2>
-                        <p style={{textAlign: "center", color: "#000"}}>Calculate Rates for your next trade</p>
+                        <h2 style={{ textAlign: 'center' }}>Rates Calculator</h2>
+                        <p style={{ textAlign: 'center', color: '#000' }}>Calculate Rates for your next trade</p>
                         <Col lg={12}>
                             <Card>
                                 <CardBody>
@@ -187,6 +172,8 @@ class Cryptocurrencies extends Component {
                                                                 updateAmounr={this.updateAmounr}
                                                                 updateTxnType={this.updateTxnType}
                                                                 parentState={this.state}
+                                                                selectedCrypto={this.state.selectedCrypto}
+                                                                amount={this.state.amount}
                                                             />
                                                         </Col>
                                                         <Col

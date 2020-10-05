@@ -22,6 +22,11 @@ class Admin extends Component {
             sort: true,
         },
         {
+            dataField: 'username',
+            text: 'Username',
+            sort: true,
+        },
+        {
             dataField: 'asset',
             text: 'Asset',
             sort: true,
@@ -148,6 +153,12 @@ class Admin extends Component {
         }));
     }
 
+    rateCheck(rates, amount) {
+        // Only one item should match in the rates object so pick that one
+        const selectedRate = rates.filter(({startAmount, endAmount}) => startAmount <= amount && endAmount >= amount)[0];
+        return selectedRate === undefined ? 0 : selectedRate.amount
+    }
+
     async getTransactions() {
         this.toggleLoader();
         const options = {
@@ -157,16 +168,24 @@ class Admin extends Component {
                 Authorization: 'Bearer ' + getLoggedInUser().token,
             },
         };
+
         const response = await fetchJSON('/transactions/admin/find-all', options);
         if (response.code === 0) {
             const transactions = response.data.map((t) => {
                 const form = t.txnType === 'BUY' ? 'buying' : 'selling';
-                const rate = t.txnForm === 'CRYPTOCURRENCY' ? t.cryptoRate[form] : t.giftCardRate[form];
+                let rate = t.txnForm === 'CRYPTOCURRENCY' ? t.cryptoRate[form] : t.giftCardRate[form];
+
+                // If rate is an array, handle getting the actual rate
+                if(Array.isArray(rate)) {
+                    rate = this.rateCheck(rate, t.value)
+                }
+                
                 return {
                     id: t.id,
                     asset: t.asset,
                     initDate: t.initDate,
                     confirmDate: t.confirmDate,
+                    username: t.username,
                     units: t.units,
                     value: t.value,
                     txnForm: t.txnForm,
@@ -184,7 +203,7 @@ class Admin extends Component {
     defaultSorted = [
         {
             dataField: 'id',
-            order: 'asc',
+            order: 'desc',
         },
     ];
 

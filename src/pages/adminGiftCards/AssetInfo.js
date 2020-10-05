@@ -12,7 +12,7 @@ const AssetInfo = ({
     getRates,
     toggleStatus,
 }) => {
-    console.log(cardType);
+    // console.log(giftCard, selling);
     const toggleModal = () => {
         updateSelected(giftCard.name, giftCard.id, cardType);
         toggle();
@@ -47,18 +47,20 @@ const AssetInfo = ({
                         <h5 className="card-title font-size-16">{giftCard.name}</h5>
 
                         <p className="card-text">
-                            {selling !== undefined || selling === '' ? (
+                            {selling !== undefined && selling !== '' ? (
                                 <small className="text-muted">
-                                    Selling Rate: {selling} {giftCard.currency}
+                                    {console.log(selling[0])}
+                                    <b>Selling Rate: </b>{selling ? (selling[0] ? selling[0].amount : selling) : "please update this card"} {giftCard.currency}
                                 </small>
                             ) : null}
                             <br></br>
                             {buying !== undefined && buying !== '' && buying !== null ? (
                                 <small className="text-muted">
-                                    Buying Rate: {buying} {giftCard.currency}
+                                    <b>Buying Rate: </b>{buying[0] ? buying[0].amount : 0} {giftCard.currency}
                                 </small>
                             ) : null}
-                            <small className="text-muted">Card Type: {cardType}</small>
+                            <br></br>
+                            <small className="text-muted"><b>Card Type: </b>{cardType}</small>
                         </p>
                     </CardBody>
                 </Col>

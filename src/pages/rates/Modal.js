@@ -11,6 +11,7 @@ class Modals extends Component {
         this.state = {
             modal: false,
             redirect: '',
+            rate: 0.0,
         };
 
         this.toggle = this.toggle.bind(this);
@@ -33,6 +34,7 @@ class Modals extends Component {
     openModalWithSize = (size) => {
         this.setState({ size: size, className: null });
         this.toggle();
+        this.setState({ rate: this.renderRate() });
     };
 
     /**
@@ -41,6 +43,7 @@ class Modals extends Component {
     openModalWithClass = (className) => {
         this.setState({ className: className, size: null });
         this.toggle();
+        this.setState({ rate: this.renderRate() });
     };
 
     renderName = () => {
@@ -51,15 +54,41 @@ class Modals extends Component {
         return selectedCrypto;
     };
 
+    renderRate = () => {
+        const { selectedCrypto, amount, txnType } = this.props.parentState;
+        let rate = 0.0;
+        if (selectedCrypto[txnType] !== 'number' || selectedCrypto[txnType] !== 'string') {
+            const variableRates = selectedCrypto[txnType];
+            console.log(variableRates);
+            // This is to allow crypto rates to check different prices for different rates
+            if (typeof variableRates === 'number' || typeof variableRates === 'string') {
+                rate = variableRates;
+            } else {
+                variableRates.forEach((r) => {
+                    if (r.startAmount <= amount && r.endAmount > amount) {
+                        rate = r.amount;
+                    }
+                });
+            }
+            console.log('RATE', rate);
+            console.log('AMOUNT', amount);
+            return rate;
+        } else {
+            return selectedCrypto[txnType];
+        }
+    };
+
     initiateTransaction = async () => {
         const { selectedCrypto, amount, activeTab, txnType } = this.props.parentState;
+        const rate =
+            typeof selectedCrypto[txnType] === 'object' ? selectedCrypto[txnType].amount : selectedCrypto[txnType];
         const transactionDAO = {
             asset: selectedCrypto.asset.name,
             txnType: txnType,
             txnForm: activeTab === '1' ? 'GIFT_CARD' : 'CRYPTOCURRENCY',
             status: 'PENDING',
             units: amount,
-            value: amount * selectedCrypto[txnType],
+            value: amount * this.state.rate,
         };
         console.log(transactionDAO);
 
@@ -79,9 +108,11 @@ class Modals extends Component {
         if (this.state.redirect !== '') {
             return <Redirect to={this.state.redirect} />;
         }
+        const { selectedCrypto, amount, activeTab, txnType } = this.props.parentState;
         return (
             <React.Fragment>
                 <button
+                    disabled={!(amount !== "0.00" && selectedCrypto.asset !== undefined && txnType !== "")}
                     type="button"
                     className="btn btn-primary btn-sm form-control"
                     onClick={() => this.openModalWithClass('modal-dialog-centered')}>
@@ -95,39 +126,40 @@ class Modals extends Component {
                     <ModalHeader toggle={this.toggle}>Initiate Trade</ModalHeader>
                     <ModalBody>
                         <p>
-                            You are about to initiate a transaction with the datails below. You will be forwarded to an
-                            administrator you can chat with to complete the transaction
+                            You are about to initiate a transaction with the datails below. You will be forwarded to a
+                            page where you can initiate a chat with an admin to complete your transaction
                         </p>
                         <hr />
                         <h6>Transaction Details</h6>
                         <table className="table table-stripped">
-                            <tr>
-                                <th>Asset Name</th>
-                                <td>{this.renderName()}</td>
-                            </tr>
-                            <tr>
-                                <th>Transaction Type</th>
-                                <td>{this.props.parentState.txnType}</td>
-                            </tr>
-                            <tr>
-                                <th>Asset amount</th>
-                                <td>
-                                    {`$${this.props.parentState.amount.toLocaleString('en-US', {
-                                        style: 'currency',
-                                        currency: 'USD',
-                                    })}`}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Amount to pay</th>
-                                <td>
-                                    {console.log(this.props.parentState)}
-                                    {(
-                                        this.props.parentState.amount *
-                                        this.props.parentState.selectedCrypto[this.props.parentState.txnType]
-                                    ).toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })}
-                                </td>
-                            </tr>
+                            <tbody>
+                                <tr>
+                                    <th>Asset Name</th>
+                                    <td>{this.renderName()}</td>
+                                </tr>
+                                <tr>
+                                    <th>Transaction Type</th>
+                                    <td>{this.props.parentState.txnType}</td>
+                                </tr>
+                                <tr>
+                                    <th>Asset amount</th>
+                                    <td>
+                                        {`$${this.props.parentState.amount.toLocaleString('en-US', {
+                                            style: 'currency',
+                                            currency: 'USD',
+                                        })}`}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Amount to pay</th>
+                                    <td>
+                                        {(this.props.parentState.amount * this.state.rate).toLocaleString('en-NG', {
+                                            style: 'currency',
+                                            currency: 'NGN',
+                                        })}
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </ModalBody>
                     <ModalFooter>

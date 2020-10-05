@@ -26,7 +26,7 @@ const Member = ({ image, name, description, className }) => {
             <Media body>
                 <Link to={`./transfer?name=${name}`}>
                     <Button className="float-right mt-2" size={'sm'} color="primary">
-                        Trade Now
+                        Trade
                     </Button>
                 </Link>
             </Media>

@@ -1,0 +1,90 @@
+ @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500&display=swap');
+ @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+.t {
+    font-family: Montserrat;
+}
+
+.h-title {
+    font-family: Montserrat;
+    font-weight: 400;
+    font-size: 36px;
+}
+
+.h-subtitle {
+    font-family: Montserrat;
+    font-weight: 300;
+    font-size: 18px;
+}
+
+.h-intro {
+    background-color: #292450;
+    /* height: 500px; */
+    width: 100vw;
+    margin-left: -15px !important;
+    padding: 50px 20px;
+}
+
+.h-icon {
+    font-size: 1.2em !important;
+}
+
+.h-center {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.large-icon {
+    font-size: 5em;
+    text-align: center;
+}
+
+.h-in {
+    width: 10%;
+    height: 60px;
+}
+
+  .h-dotted { padding-top: 40px; border: 1px dotted #ffffff; border-style: none none dashed; color: #fff; background-color: transparent; }
+
+
+@media (min-width: 576px){
+    .h-intro {
+        margin-left: calc((-100vw + 510px)/2) !important;
+        padding: 50px 20px !important;
+    }
+}
+
+@media (min-width: 768px){
+    .h-intro {
+        margin-left: calc((-100vw + 690px)/2) !important;
+        padding: 50px 100px !important;
+    }
+}
+
+@media (min-width: 992px){
+    .h-intro {
+        margin-left: calc((-100vw + 930px)/2) !important;
+        padding: 50px 100px !important;
+    }
+}
+
+@media (min-width: 1200px){
+    .h-intro {
+        margin-left: calc((-100vw + 1110px)/2) !important;
+        padding: 50px 100px;
+    }
+}
+
+
+
+
+/* --breakpoint-xs: 0;
+--breakpoint-sm: 576px;
+--breakpoint-md: 768px;
+--breakpoint-lg: 992px;
+--breakpoint-xl: 1200px; */
+
+/* fcmb.dmldisco.url=https://esbprod.fcmb.com/dmldiscosservice/v1
+appId=270
+appKey=0336828CA14496863472877FF5322083 */

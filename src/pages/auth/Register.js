@@ -29,7 +29,7 @@ class Register extends Component {
 
     constructor(props) {
         super(props);
-
+        this.state = {registered: false}
         this.handleValidSubmit = this.handleValidSubmit.bind(this);
     }
 
@@ -64,7 +64,7 @@ class Register extends Component {
      * Redirect to confirm
      */
     renderRedirectToConfirm = () => {
-        return <Redirect to="/account/confirm" />;
+        return <Redirect to="/account/login?success" />;
     };
 
     render() {
@@ -73,7 +73,7 @@ class Register extends Component {
             <React.Fragment>
                 {this.renderRedirectToRoot()}
 
-                {/* {Object.keys(this.props.user || {}).length > 0 && this.renderRedirectToConfirm()} */}
+                {Object.keys(this.props.user || {}).length > 0 && this.renderRedirectToConfirm()}
 
                 {(this._isMounted || !isAuthTokenValid) && (
                     <div className="account-pages mt-5 mb-5">

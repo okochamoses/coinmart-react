@@ -16,12 +16,15 @@ const ProjectStats = (props) => {
                             <hr></hr>
                             <Row className="py-1" style={{ borderBottom: '10px' }}>
                                 {props.giftCards.map((giftCard, idx) => {
+                                    console.log(giftCard)
+                                    const rate = typeof giftCard.selling === "number" || typeof giftCard.selling === "string" ?
+                                        giftCard.selling : giftCard.selling[0].amount
                                     return (
                                         <Col key={idx} xl={3} sm={6}>
                                             <Member
                                                 image={`./${giftCard.image}`}
                                                 name={giftCard.name}
-                                                description={giftCard.currency + ' ' + giftCard.selling}
+                                                description={giftCard.currency + ' ' + rate}
                                             />
                                         </Col>
                                     );

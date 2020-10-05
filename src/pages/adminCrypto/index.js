@@ -56,6 +56,13 @@ class AdminCrypto extends Component {
         await this.getCryptoRates();
     }
 
+
+    rateCheck(rates, amount) {
+        // Only one item should match in the rates object so pick that one
+        const selectedRate = rates.filter(({startAmount, endAmount}) => startAmount <= amount && endAmount >= amount)[0];
+        return selectedRate === undefined ? 0 : selectedRate.amount
+    }
+
     async getCryptoRates() {
         this.toggleLoader();
         try {
@@ -67,7 +74,14 @@ class AdminCrypto extends Component {
             if (response.code === 0) {
                 // console.log(response.data);
                 const rates = response.data;
+                // const processedRates = []
+                // rates.forEach(rate => {
+                //     rate.buying = rate.buying[0];
+                //     rate.selling = rate.selling[0];
+                //     processedRates.push(rate)
+                // })
                 console.log(rates);
+                // console.log(processedRates);
                 rates.sort((a, b) => (a.cryptocurrency.name > b.cryptocurrency.name ? 1 : -1));
                 this.setState({ cryptocurrencyRates: rates, filteredCryptocurrencyRates: rates });
             }

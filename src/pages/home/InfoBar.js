@@ -1,14 +1,41 @@
 import React from 'react';
 
 const InfoBar = ({ activeTab, selectedCrypto, amount, txnType }) => {
-    const totalPayable =
+
+
+    const renderRate = () => {
+        console.log(selectedCrypto[txnType])
+        if(Array.isArray(selectedCrypto[txnType])) {
+            return selectedCrypto[txnType][0].amount;
+        }
+        return selectedCrypto[txnType];
+    }
+    console.log(selectedCrypto)
+    console.log("AMOUNT", amount)
+    let totalPayable =
         selectedCrypto[txnType] === undefined
             ? ''
-            : `${(selectedCrypto[txnType] * amount).toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })}`;
-    const rate =
+            : `${(renderRate() * amount).toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })}`;
+    let rate =
         selectedCrypto[txnType] === undefined
             ? '--'
-            : `${selectedCrypto[txnType].toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })} / $`;
+            : `${renderRate().toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })} / $`;
+
+    const getAmountFromRange = () => {
+        const variableRates = selectedCrypto[txnType];
+        console.log(variableRates)
+        variableRates.forEach(r => {
+            if (r.startAmount <= amount && r.endAmount > amount) {
+                rate = r.amount
+            }
+        })
+        totalPayable =  `${(rate * amount).toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })}`
+        rate = `${rate.toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })} / $`
+        return rate;
+    }
+
+    if (selectedCrypto.cryptocurrency !== undefined && amount !== "0.00" && txnType !== "") { getAmountFromRange() }
+    if (selectedCrypto.giftCard !== undefined && amount !== "0.00" && txnType !== "") { getAmountFromRange() }
     return (
         <React.Fragment>
             <img

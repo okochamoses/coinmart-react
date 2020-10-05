@@ -5,7 +5,7 @@
  */
 const fetchJSON = (url, options = {}) => {
     const baseUrl = 'http://localhost:8080/coinmart/api';
-    // const baseUrl = 'http://45.77.59.133:5000/coinmart/api';
+    // const baseUrl = 'https://coinmart.com.ng:8443/coinmart/api';
     return fetch(baseUrl + url, options)
         .then(response => {
             if (!response.status === 200) {
